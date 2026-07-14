@@ -15,6 +15,13 @@ streamlit run app.py
 - `controle-internet.html`: interface do portal com o layout MSE.
 - `requirements.txt`: dependencias para execucao no Streamlit Cloud.
 
+## Acesso protegido
+
+O portal agora exige login antes de abrir a interface.
+
+- Em ambiente local, o padrao e `admin` / `mse123`.
+- No Streamlit Cloud, configure os secrets `portal_username` e `portal_password` para trocar essas credenciais.
+
 ## Deploy no Streamlit Community Cloud
 
 1. Suba este repositorio no GitHub.

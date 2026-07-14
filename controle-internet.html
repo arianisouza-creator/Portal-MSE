@@ -44,16 +44,18 @@
     .mini b{display:block;font-size:13px;color:#27407a}
     .mini .meta{font-size:10px;text-transform:uppercase;color:var(--body);margin-top:2px}
     .shell{max-width:var(--maxw);margin:auto;display:grid;grid-template-columns:255px 1fr;gap:18px;padding:18px 28px 38px}
-    .side{background:linear-gradient(180deg,#243d66,#1a2e4f);color:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px;min-height:calc(100vh - 138px);position:sticky;top:12px}
-    .ssearch{height:40px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.72);padding:0 11px;margin-bottom:14px}
+    .side{background:linear-gradient(180deg,#2a4775,#27416e);color:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px;min-height:calc(100vh - 138px);position:sticky;top:12px}
+    .ssearch{height:40px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.92);display:flex;align-items:center;gap:9px;color:#9aa5b6;padding:0 11px;margin-bottom:14px}
+    .ssearch kbd{margin-left:auto;font:500 9px "IBM Plex Mono",monospace;color:#98a1b0;background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 5px}
     .navblock{border-top:1px solid rgba(255,255,255,.08);padding-top:12px}
-    .nv{height:42px;border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 12px;color:rgba(255,255,255,.88);transition:.16s ease}
+    .nv{height:42px;border-radius:12px;display:flex;align-items:center;gap:10px;padding:0 12px;color:rgba(255,255,255,.88);transition:.16s ease;border:1px solid transparent;background:rgba(255,255,255,.03)}
     .nv:hover{background:rgba(255,255,255,.08)}
-    .nv.on{background:#3a5583;color:#fff;font-weight:700}
+    .nv.on{background:#3a5583;color:#fff;font-weight:700;border-color:#182a47;box-shadow:2px 2px 0 #182a47}
     .ni{width:18px;height:18px;display:grid;place-items:center;flex:0 0 auto}
     .nl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .chev{width:18px;height:18px;display:grid;place-items:center;transition:transform .16s ease}
     .navblock.open .chev{transform:rotate(90deg)}
+    .navblock:not(.open) .navtree{display:none}
     .navtree{padding:8px 0 0 8px;border-left:1px solid rgba(255,255,255,.14);margin:8px 0 0 10px}
     .subitem{height:34px;display:flex;align-items:center;padding:0 12px;border-radius:10px;color:rgba(255,255,255,.76);font-size:13px}
     .subitem.on{background:rgba(255,255,255,.12);color:#fff;font-weight:700}
@@ -64,6 +66,9 @@
     .lab b{display:block;font-size:18px;color:#1a3770}
     .lab small{display:block;font-size:10px;text-transform:uppercase;color:var(--mut);margin-top:3px;font-family:"IBM Plex Mono",monospace}
     .monthbar{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-bottom:16px}
+    .topmenu{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:6px 0 18px}
+    .toplink{padding:12px 16px;background:transparent;border:0;border-bottom:2px solid transparent;color:#456191;font-size:12px;font-weight:600}
+    .toplink.on{color:var(--blue);border-bottom-color:var(--blue)}
     .search,.selectbox{height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;display:flex;align-items:center;gap:9px;padding:0 12px;box-shadow:var(--shadow)}
     .search input,.selectbox input,.selectbox select{border:0;background:transparent;width:100%;outline:0;color:var(--ink)}
     .ghost,.primary,.danger{min-height:42px;border-radius:12px;padding:0 14px;font-weight:700;border:0;display:flex;align-items:center;gap:8px;justify-content:center}
@@ -87,7 +92,7 @@
     .seg{display:flex;gap:8px;flex-wrap:wrap}
     .seg button{height:38px;border:1px solid var(--line);background:#fff;color:var(--body);border-radius:10px;padding:0 14px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase}
     .seg button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-    .dashgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+    .dashgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;margin-bottom:16px}
     .pad{padding:16px}
     .chead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
     .ti2{font-weight:700;font-size:16px;color:#1b3974}
@@ -133,6 +138,19 @@
     .empty-state{padding:22px;border:1px dashed var(--line);border-radius:12px;background:#fbfcff;text-align:center;color:var(--body)}
     .empty-state b{display:block;color:var(--ink);margin-bottom:5px}
     .table-foot{padding:12px 16px;color:var(--mut);font-size:10px;text-transform:uppercase}
+    .view{display:none}
+    .view.on{display:block}
+    .cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .cred-list{display:grid;gap:12px}
+    .cred-item{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+    .cred-item h4{margin:0 0 10px;color:#17356c;font-size:15px}
+    .cred-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-2);font-size:12px;color:var(--body)}
+    .cred-row:last-child{border-bottom:0}
+    .pwd{font-family:"IBM Plex Mono",monospace}
+    .inline-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-size:12px;color:#456191;font-weight:600}
+    .contract-stack{display:grid;gap:14px;margin-top:14px}
+    .mini-form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end}
+    .mini-form .primary{min-height:40px}
     .modal{position:fixed;inset:0;background:rgba(22,36,60,.38);display:none;place-items:center;padding:20px;z-index:20}
     .modal.open{display:grid}
     .dialog{width:min(700px,100%);background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(16,24,40,.18);padding:18px}
@@ -143,12 +161,12 @@
     .fab{position:fixed;right:24px;bottom:24px;width:52px;height:52px;border:0;border-radius:16px;background:var(--navy);color:#fff;display:grid;place-items:center;box-shadow:0 12px 24px rgba(22,36,60,.22)}
     .side-closed{grid-template-columns:86px 1fr}
     .side-closed .side{padding:12px 10px}
-    .side-closed .ssearch span,.side-closed .navlabel,.side-closed .navtree,.side-closed .nl,.side-closed .chev{display:none}
+    .side-closed .ssearch span,.side-closed .navlabel,.side-closed .navtree,.side-closed .nl,.side-closed .chev,.side-closed .ssearch kbd{display:none}
     .side-closed .nv{justify-content:center;padding:0}
     svg{width:18px;height:18px;stroke-width:1.8}
-    @media (max-width:1280px){.kpis{grid-template-columns:repeat(3,1fr)}.dashgrid{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}}
+    @media (max-width:1280px){.kpis{grid-template-columns:repeat(3,1fr)}.dashgrid{grid-template-columns:1fr 1fr}.detail-grid,.cred-grid{grid-template-columns:1fr}}
     @media (max-width:980px){.shell{grid-template-columns:1fr;padding:14px}.side{position:static;min-height:0}.trow{grid-template-columns:1fr 1fr;padding:14px}.monthbar,.toolbar{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.hinner{padding:14px}.user,.clock{display:none}}
-    @media (max-width:640px){.trow{grid-template-columns:1fr}.mini{border-right:0;border-bottom:1px solid var(--line);padding-bottom:10px}.mini:last-child{border-bottom:0}.kpis{grid-template-columns:1fr}.dashgrid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.donut-wrap{grid-template-columns:1fr}}
+    @media (max-width:640px){.trow{grid-template-columns:1fr}.mini{border-right:0;border-bottom:1px solid var(--line);padding-bottom:10px}.mini:last-child{border-bottom:0}.kpis{grid-template-columns:1fr}.dashgrid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.donut-wrap,.cred-grid{grid-template-columns:1fr}}
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
   </style>
 </head>
@@ -198,7 +216,7 @@
 
   <div class="shell">
     <aside class="side">
-      <div class="ssearch"><span data-icon="search"></span><span class="navlabel">Buscar modulos</span></div>
+      <div class="ssearch"><span data-icon="search"></span><span class="navlabel">Buscar aplicacoes</span><kbd>Ctrl K</kbd></div>
       <div class="navblock open" id="adminBlock">
         <button class="nv on" id="adminToggle" type="button">
           <span class="ni" data-icon="briefcase"></span>
@@ -228,6 +246,13 @@
         <button class="primary" id="addBtn"><span data-icon="plus"></span>Novo registro</button>
       </div>
 
+      <div class="topmenu">
+        <button class="toplink on" data-view="overview">Visao Geral</button>
+        <button class="toplink" data-view="access">Linhas Ativas e Acessos</button>
+        <button class="toplink" data-view="contracts">Contratos</button>
+      </div>
+
+      <div class="view on" id="view-overview">
       <div class="hero">
         <h1 id="pageTitle">Dashboard Executivo</h1>
         <p id="pageSubtitle">Controle mensal iniciado do zero para o mes selecionado.</p>
@@ -298,8 +323,8 @@
         </article>
 
         <article class="card pad">
-          <div class="chead"><span class="ti2">Rateio do mes</span><span class="eyebrow" id="rateioTitle">Mes atual</span></div>
-          <div class="rateio" id="rateio"></div>
+          <div class="chead"><span class="ti2">Linhas ativas</span><span class="eyebrow">Resumo</span></div>
+          <div class="list" id="activeLines"></div>
         </article>
       </section>
 
@@ -348,6 +373,47 @@
           </div>
         </aside>
       </div>
+      </div>
+
+      <div class="view" id="view-access">
+        <div class="hero" style="margin-bottom:14px">
+          <h1>Linhas Ativas e Acessos</h1>
+          <p>Area protegida para credenciais, linhas e acessos operacionais do mes selecionado.</p>
+        </div>
+        <div class="cred-grid">
+          <section class="card pad">
+            <div class="chead"><span class="ti2">Resumo das linhas ativas</span><span class="eyebrow" id="accessMonthLabel">Mes atual</span></div>
+            <div class="cred-list" id="activeSummary"></div>
+          </section>
+          <section class="card pad">
+            <div class="chead"><span class="ti2">Credenciais de acesso</span><span class="eyebrow">Protegido</span></div>
+            <div class="cred-list" id="credentialsList"></div>
+          </section>
+        </div>
+      </div>
+
+      <div class="view" id="view-contracts">
+        <div class="hero" style="margin-bottom:14px">
+          <h1>Cadastro de Contratos</h1>
+          <p>Cadastre novas empresas e contratos uma vez. Depois o novo registro puxa obra, empresa, vencimento e numero do contrato automaticamente.</p>
+        </div>
+        <section class="card pad">
+          <div class="chead"><span class="ti2">Novo contrato</span><span class="eyebrow">Base mestre</span></div>
+          <form id="contractForm" class="mini-form">
+            <label>Empresa<input name="empresaContrato" required placeholder="Ex.: Vivo"></label>
+            <label>Obra<input name="obraContrato" required placeholder="Ex.: Sede"></label>
+            <label>Vencimento<input name="vencimentoContrato" type="number" min="1" max="31" required placeholder="Dia do mes"></label>
+            <label>Numero do contrato<input name="numeroContrato" required placeholder="Ex.: 285704686"></label>
+            <button class="primary" type="submit"><span data-icon="plus"></span>Salvar</button>
+          </form>
+        </section>
+        <div class="contract-stack">
+          <section class="card pad">
+            <div class="chead"><span class="ti2">Contratos cadastrados</span><span class="eyebrow" id="contractCount">0 contratos</span></div>
+            <div class="cred-list" id="contractsList"></div>
+          </section>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -361,6 +427,11 @@
       </div>
       <form id="form">
         <div class="formgrid">
+          <label>Contrato cadastrado
+            <select name="contratoBase" id="contractPreset">
+              <option value="">Selecionar contrato salvo</option>
+            </select>
+          </label>
           <label>Mes de referencia<input name="mesReferencia" type="month" required></label>
           <label>Status
             <select name="status">
@@ -376,6 +447,9 @@
           <label>Valor<input name="valor" placeholder="Ex.: 1339,94"></label>
           <label>Pedido<input name="pedido" placeholder="Ex.: 114735"></label>
           <label>Contato<input name="contato" placeholder="Telefone, WhatsApp ou responsavel"></label>
+          <label>Linha ativa<input name="linhaAtiva" placeholder="Ex.: Link principal Sede"></label>
+          <label>Login de acesso<input name="loginAcesso" placeholder="Ex.: usuario@empresa.com"></label>
+          <label>Senha de acesso<input name="senhaAcesso" type="password" placeholder="Senha protegida"></label>
           <label>Aprovado
             <select name="aprovado">
               <option value="sim">Sim</option>
@@ -423,7 +497,10 @@
       eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',
       close:'M18 6 6 18M6 6l12 12',
       save:'M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8',
-      chat:'M21 12a8 8 0 0 1-11 7.3L3 21l1.7-7A8 8 0 1 1 21 12Z'
+      chat:'M21 12a8 8 0 0 1-11 7.3L3 21l1.7-7A8 8 0 1 1 21 12Z',
+      unlock:'M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.9-1',
+      lock:'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+      edit:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z'
     };
 
     function icon(name, size = 18) {
@@ -445,11 +522,21 @@
     document.getElementById('adminToggle').addEventListener('click', () => {
       document.getElementById('adminBlock').classList.toggle('open');
     });
+    document.querySelectorAll('.toplink').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.toplink').forEach(item => item.classList.remove('on'));
+        document.querySelectorAll('.view').forEach(view => view.classList.remove('on'));
+        button.classList.add('on');
+        document.getElementById(`view-${button.dataset.view}`).classList.add('on');
+      });
+    });
 
     let filter = 'todos';
     let selectedId = null;
+    let editingId = null;
     const monthPicker = document.getElementById('monthPicker');
     const dataByMonth = {};
+    const contracts = [];
 
     function defaultMonth() {
       const now = new Date();
@@ -471,6 +558,10 @@
 
     function currentData() {
       return ensureMonth(currentMonthKey());
+    }
+
+    function contractLabel(contract) {
+      return `${contract.empresa} | ${contract.obra} | ${contract.numeroContrato}`;
     }
 
     function monthLabel(monthKey) {
@@ -581,26 +672,109 @@
       `).join('');
     }
 
-    function renderRateio(rows) {
-      const grouped = {};
-      rows.forEach(row => {
-        const obra = row.obra || 'Sem obra';
-        grouped[obra] = (grouped[obra] || 0) + (row.valor || 0);
-      });
-      const total = rows.reduce((sum, row) => sum + (row.valor || 0), 0);
-      document.getElementById('rateioTitle').textContent = monthLabel(currentMonthKey());
-      const container = document.getElementById('rateio');
-      const entries = Object.entries(grouped);
-      if (!entries.length || !total) {
-        container.innerHTML = `<div class="empty-state"><b>Rateio aguardando cadastro.</b>Assim que os valores do mes forem preenchidos, o fechamento aparece aqui.</div>`;
+    function renderActiveLines(rows) {
+      const withLines = rows.filter(row => row.linhaAtiva);
+      const summary = document.getElementById('activeLines');
+      const accessSummary = document.getElementById('activeSummary');
+      const credentials = document.getElementById('credentialsList');
+      document.getElementById('accessMonthLabel').textContent = monthLabel(currentMonthKey());
+      if (!withLines.length) {
+        summary.innerHTML = `<div class="empty-state"><b>Sem linhas ativas cadastradas.</b>Adicione a descricao da linha no cadastro do contrato.</div>`;
+        accessSummary.innerHTML = `<div class="empty-state"><b>Nenhuma linha listada.</b>Cadastre linhas ativas para montar o resumo operacional.</div>`;
+        credentials.innerHTML = `<div class="empty-state"><b>Nenhuma credencial registrada.</b>Preencha login e senha no cadastro do contrato quando necessario.</div>`;
         return;
       }
-      container.innerHTML = entries.map(([obra, value]) => `
-        <div class="rate-line">
-          <span>${obra}</span>
-          <b>${Math.round(value / total * 100)}%</b>
+      summary.innerHTML = withLines.slice(0, 4).map(row => `
+        <div class="li">
+          <div>
+            <b class="link">${row.linhaAtiva}</b>
+            <div class="lisub">${row.obra || 'Sem obra'} | ${row.empresa || 'Sem empresa'}</div>
+          </div>
+          <div class="tag ok">Ativa</div>
         </div>
-      `).join('') + `<div class="rate-line"><span><b>Fechamento</b></span><b style="color:var(--green)">100%</b></div>`;
+      `).join('');
+      accessSummary.innerHTML = withLines.map(row => `
+        <div class="cred-item">
+          <h4>${row.linhaAtiva}</h4>
+          <div class="cred-row"><span>Obra</span><b>${row.obra || '-'}</b></div>
+          <div class="cred-row"><span>Empresa</span><b>${row.empresa || '-'}</b></div>
+          <div class="cred-row"><span>Contrato</span><b>${row.contrato || '-'}</b></div>
+          <div class="cred-row"><span>Vencimento</span><b>${row.vencimento || '-'}</b></div>
+        </div>
+      `).join('');
+      credentials.innerHTML = withLines.map(row => `
+        <div class="cred-item">
+          <h4>${row.linhaAtiva}</h4>
+          <div class="cred-row"><span>Login</span><b class="pwd">${row.loginAcesso || 'Nao informado'}</b></div>
+          <div class="cred-row"><span>Senha</span><b class="pwd" data-secret="${row.id}">${maskPassword(row.senhaAcesso)}</b></div>
+          <div style="margin-top:10px">
+            <button class="inline-btn" type="button" onclick="togglePassword(${row.id})">${row.senhaAcesso ? 'Mostrar senha' : 'Sem senha'}</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function populateContractOptions() {
+      const select = document.getElementById('contractPreset');
+      if (!select) return;
+      const currentValue = select.value;
+      select.innerHTML = `<option value="">Selecionar contrato salvo</option>` + contracts.map(contract => `
+        <option value="${contract.id}">${contractLabel(contract)}</option>
+      `).join('');
+      if (contracts.some(contract => String(contract.id) === currentValue)) {
+        select.value = currentValue;
+      }
+    }
+
+    function renderContracts() {
+      const list = document.getElementById('contractsList');
+      const count = document.getElementById('contractCount');
+      count.textContent = `${contracts.length} contrato${contracts.length === 1 ? '' : 's'}`;
+      if (!contracts.length) {
+        list.innerHTML = `<div class="empty-state"><b>Nenhum contrato cadastrado.</b>Cadastre a empresa e o contrato aqui para aproveitar o preenchimento automatico no novo registro.</div>`;
+        populateContractOptions();
+        return;
+      }
+      list.innerHTML = contracts.map(contract => `
+        <div class="cred-item">
+          <h4>${contract.empresa}</h4>
+          <div class="cred-row"><span>Obra</span><b>${contract.obra}</b></div>
+          <div class="cred-row"><span>Vencimento</span><b>${contract.vencimento}</b></div>
+          <div class="cred-row"><span>Contrato</span><b>${contract.numeroContrato}</b></div>
+        </div>
+      `).join('');
+      populateContractOptions();
+    }
+
+    function applyContractPreset(contractId) {
+      const form = document.getElementById('form');
+      const contract = contracts.find(item => String(item.id) === String(contractId));
+      if (!form || !contract) return;
+      form.elements.empresa.value = contract.empresa;
+      form.elements.obra.value = contract.obra;
+      form.elements.vencimento.value = contract.vencimento;
+      form.elements.contrato.value = contract.numeroContrato;
+    }
+
+    function fillFormFromRow(row, monthKey) {
+      const form = document.getElementById('form');
+      if (!form || !row) return;
+      form.elements.contratoBase.value = '';
+      form.elements.mesReferencia.value = monthKey;
+      form.elements.status.value = row.status || 'Ativo';
+      form.elements.obra.value = row.obra || '';
+      form.elements.empresa.value = row.empresa || '';
+      form.elements.vencimento.value = row.vencimento || '';
+      form.elements.contrato.value = row.contrato || '';
+      form.elements.valor.value = row.valor != null ? String(row.valor).replace('.', ',') : '';
+      form.elements.pedido.value = row.pedido === '-' ? '' : (row.pedido || '');
+      form.elements.contato.value = row.contato === '-' ? '' : (row.contato || '');
+      form.elements.linhaAtiva.value = row.linhaAtiva || '';
+      form.elements.loginAcesso.value = row.loginAcesso || '';
+      form.elements.senhaAcesso.value = row.senhaAcesso || '';
+      form.elements.aprovado.value = row.aprovado ? 'sim' : 'nao';
+      form.elements.s1.value = row.s1 ? 'sim' : 'nao';
+      form.elements.obs.value = row.obs || '';
     }
 
     function renderTable(rows) {
@@ -621,7 +795,12 @@
           <td>${row.pedido || '-'}</td>
           <td>${row.aprovado ? 'Sim' : 'Nao'}</td>
           <td>${row.s1 ? 'Sim' : 'Nao'}</td>
-          <td class="actioncell"><button class="rowact" title="Ver detalhe" aria-label="Ver detalhe" onclick="selectRow(${row.id})">${icon('eye')}</button></td>
+          <td class="actioncell">
+            <div style="display:flex;justify-content:flex-end;gap:8px">
+              <button class="rowact" title="Ver detalhe" aria-label="Ver detalhe" onclick="selectRow(${row.id})">${icon('eye')}</button>
+              <button class="rowact" title="Editar linha" aria-label="Editar linha" onclick="editRow(${row.id})">${icon('edit')}</button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
@@ -656,6 +835,16 @@
     }
     window.selectRow = selectRow;
 
+    function editRow(id) {
+      const row = currentData().find(item => item.id === id);
+      if (!row) return;
+      editingId = id;
+      document.getElementById('modalTitle').textContent = 'Editar registro de internet';
+      fillFormFromRow(row, currentMonthKey());
+      modal.classList.add('open');
+    }
+    window.editRow = editRow;
+
     function render() {
       ensureMonth(currentMonthKey());
       const rows = filteredRows();
@@ -667,11 +856,26 @@
       renderBars(allRows);
       renderStatus(allRows);
       renderUpcoming(allRows);
-      renderRateio(allRows);
+      renderActiveLines(allRows);
+      renderContracts();
       renderTable(rows);
       const selected = allRows.find(item => item.id === selectedId);
       renderDetails(selected || null);
     }
+
+    function maskPassword(value) {
+      return value ? '*'.repeat(Math.max(6, value.length)) : 'Nao informada';
+    }
+
+    function togglePassword(id) {
+      const row = currentData().find(item => item.id === id);
+      const target = document.querySelector(`[data-secret="${id}"]`);
+      if (!row || !target || !row.senhaAcesso) return;
+      const showing = target.dataset.show === '1';
+      target.textContent = showing ? maskPassword(row.senhaAcesso) : row.senhaAcesso;
+      target.dataset.show = showing ? '0' : '1';
+    }
+    window.togglePassword = togglePassword;
 
     document.getElementById('q').addEventListener('input', render);
     monthPicker.addEventListener('change', () => {
@@ -688,10 +892,24 @@
       });
     });
 
+    document.getElementById('contractPreset').addEventListener('change', event => {
+      if (!event.target.value) return;
+      applyContractPreset(event.target.value);
+    });
+
     const modal = document.getElementById('modal');
-    function closeModal() { modal.classList.remove('open'); }
+    function closeModal() {
+      modal.classList.remove('open');
+      editingId = null;
+      document.getElementById('modalTitle').textContent = 'Novo registro de internet';
+    }
     document.getElementById('addBtn').addEventListener('click', () => {
+      editingId = null;
+      document.getElementById('modalTitle').textContent = 'Novo registro de internet';
       const monthInput = document.querySelector('input[name="mesReferencia"]');
+      if (monthInput) monthInput.value = currentMonthKey();
+      document.getElementById('contractPreset').value = '';
+      document.getElementById('form').reset();
       if (monthInput) monthInput.value = currentMonthKey();
       modal.classList.add('open');
     });
@@ -706,13 +924,27 @@
       render();
     });
 
+    document.getElementById('contractForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = Object.fromEntries(new FormData(event.currentTarget).entries());
+      contracts.push({
+        id: Date.now(),
+        empresa: formData.empresaContrato,
+        obra: formData.obraContrato,
+        vencimento: formData.vencimentoContrato,
+        numeroContrato: formData.numeroContrato
+      });
+      event.currentTarget.reset();
+      renderContracts();
+    });
+
     document.getElementById('form').addEventListener('submit', event => {
       event.preventDefault();
       const formData = Object.fromEntries(new FormData(event.currentTarget).entries());
       const numericValue = formData.valor ? Number(formData.valor.replace(/\./g, '').replace(',', '.')) : null;
       const targetMonth = formData.mesReferencia || currentMonthKey();
-      ensureMonth(targetMonth).push({
-        id: Date.now(),
+      const payload = {
+        id: editingId || Date.now(),
         status: formData.status,
         obra: formData.obra,
         empresa: formData.empresa,
@@ -721,10 +953,20 @@
         contato: formData.contato || '-',
         valor: Number.isFinite(numericValue) ? numericValue : null,
         pedido: formData.pedido || '-',
+        linhaAtiva: formData.linhaAtiva || '',
+        loginAcesso: formData.loginAcesso || '',
+        senhaAcesso: formData.senhaAcesso || '',
         aprovado: formData.aprovado === 'sim',
         s1: formData.s1 === 'sim',
         obs: formData.obs || ''
-      });
+      };
+      if (editingId) {
+        const rows = ensureMonth(targetMonth);
+        const index = rows.findIndex(item => item.id === editingId);
+        if (index >= 0) rows[index] = payload;
+      } else {
+        ensureMonth(targetMonth).push(payload);
+      }
       monthPicker.value = targetMonth;
       event.currentTarget.reset();
       closeModal();
