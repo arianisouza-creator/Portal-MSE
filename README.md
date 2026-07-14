@@ -1,6 +1,6 @@
 # Portal-MSE
 
-Portal administrativo em Streamlit com o primeiro modulo de `Controle de Internet`, adaptado ao layout MSE.
+Portal administrativo em Streamlit com o modulo de `Controle de Internet`.
 
 ## Como rodar localmente
 
@@ -9,30 +9,27 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## O que o portal faz hoje
+
+- `Visao Geral` aberta para consulta.
+- `Linhas Ativas e Acessos` protegida por usuario e senha.
+- `Contratos` protegida por usuario e senha.
+- Geracao automatica dos meses com base no cadastro mestre de contratos.
+- Banco SQLite local em `portal_data.db`.
+
+## Regras atuais
+
+- Usuario do cadastro: `ADM`
+- Senha do cadastro: `mse2026`
+- Campos mensais pendentes aparecem em vermelho.
+- Linhas ativas calculam o percentual automaticamente pela quantidade de centros de custo informados em cada linha.
+
 ## Estrutura principal
 
-- `app.py`: entrada da aplicacao Streamlit.
-- `controle-internet.html`: interface do portal com o layout MSE.
-- `requirements.txt`: dependencias para execucao no Streamlit Cloud.
+- `app.py`: app principal em Streamlit.
+- `portal_data.db`: banco SQLite criado automaticamente na primeira execucao.
+- `requirements.txt`: dependencias do projeto.
 
-## Acesso protegido
+## Observacao importante sobre dados
 
-O portal abre normalmente na visao geral.
-
-- As abas de cadastro protegidas usam `ADM` / `mse2026`.
-- A protecao fica nas areas de `Linhas Ativas e Acessos` e `Contratos`.
-
-## Deploy no Streamlit Community Cloud
-
-1. Suba este repositorio no GitHub.
-2. Entre em [Streamlit Community Cloud](https://docs.streamlit.io/deploy/streamlit-community-cloud).
-3. Clique em `Create app`.
-4. Escolha o repositorio `Portal-MSE`.
-5. Defina o arquivo principal como `app.py`.
-6. Clique em `Deploy`.
-
-## Observacoes
-
-- O modulo atual e o `Controle de Internet`.
-- O HTML foi mantido separado para preservar o visual MSE com menos retrabalho.
-- A base esta pronta para crescer com novos modulos do portal.
+O banco atual e local. Isso funciona bem no computador e durante o desenvolvimento, mas em hospedagens como Streamlit Community Cloud o arquivo SQLite pode ser recriado em uma nova publicacao ou reinicio do app. Para persistencia definitiva em producao, o proximo passo ideal e migrar para um banco externo, como Supabase, Neon ou PostgreSQL gerenciado.
