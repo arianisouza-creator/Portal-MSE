@@ -414,6 +414,10 @@
               </div>
             </form>
           </section>
+          <section class="card pad" style="margin-bottom:14px">
+            <div class="chead"><span class="ti2">Dashboard de rateio</span><span class="eyebrow">Percentual por centro de custo</span></div>
+            <div class="bars" id="lineRateioBars"></div>
+          </section>
           <div class="cred-grid">
             <section class="card pad">
               <div class="chead"><span class="ti2">Resumo das linhas ativas</span><span class="eyebrow" id="accessMonthLabel">Mes atual</span></div>
@@ -1405,12 +1409,36 @@
       const summary = document.getElementById('activeLines');
       const accessSummary = document.getElementById('activeSummary');
       const credentials = document.getElementById('credentialsList');
+      const rateioBars = document.getElementById('lineRateioBars');
       document.getElementById('accessMonthLabel').textContent = monthLabel(currentMonthKey());
       if (!lines.length) {
         summary.innerHTML = `<div class="empty-state"><b>Sem linhas ativas cadastradas.</b>Cadastre as linhas diretamente nesta aba protegida.</div>`;
         accessSummary.innerHTML = `<div class="empty-state"><b>Nenhuma linha listada.</b>Cadastre linhas ativas para montar o resumo operacional.</div>`;
+        rateioBars.innerHTML = `<div class="empty-state"><b>Sem rateio calculado.</b>Cadastre linhas ativas para visualizar a distribuicao por centro de custo.</div>`;
         credentials.innerHTML = `<div class="empty-state"><b>Nenhuma credencial registrada.</b>Preencha login e senha no registro mensal quando necessario.</div>`;
         return;
+      }
+      const centerCounts = {};
+      activeLines.forEach(line => {
+        normalizeCenters(line.centroCusto).forEach(center => {
+          const key = center.toUpperCase();
+          centerCounts[key] = (centerCounts[key] || 0) + 1;
+        });
+      });
+      const rateioEntries = Object.entries(centerCounts).sort((a, b) => b[1] - a[1]);
+      if (!rateioEntries.length) {
+        rateioBars.innerHTML = `<div class="empty-state"><b>Sem linhas ativas no rateio.</b>As linhas cadastradas estao marcadas como inativas.</div>`;
+      } else {
+        const maxCount = Math.max(...rateioEntries.map(([, count]) => count));
+        rateioBars.innerHTML = rateioEntries.map(([center, count]) => {
+          const pct = formatPercentNumber(100 / count);
+          return `
+            <div class="baritem">
+              <div class="barlabel"><span>${center}</span><b>${count} linha(s) | ${pct}% cada</b></div>
+              <div class="track"><div class="fill" style="width:${maxCount ? count / maxCount * 100 : 0}%"></div></div>
+            </div>
+          `;
+        }).join('');
       }
       if (!activeLines.length) {
         summary.innerHTML = `<div class="empty-state"><b>Sem linhas ativas neste mes.</b>As linhas cadastradas estao marcadas como inativas.</div>`;
@@ -1658,6 +1686,12 @@
     function editRow(id) {
       const row = currentData().find(item => item.id === id);
       if (!row) return;
+      const password = window.prompt('Digite a senha para editar este contrato:');
+      if (password == null) return;
+      if (password !== PROTECTED_PASS) {
+        window.alert('Senha invalida.');
+        return;
+      }
       editingId = id;
       document.getElementById('modalTitle').textContent = 'Editar registro de internet';
       fillFormFromRow(row, currentMonthKey());
