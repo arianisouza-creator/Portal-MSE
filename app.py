@@ -384,10 +384,10 @@ def month_rows(selected_month: str) -> list[dict[str, Any]]:
 def metric_card(label: str, value: str, help_text: str) -> None:
     st.markdown(
         f"""
-        <div style="background:#ffffff;border:1px solid #dce6f4;border-radius:16px;padding:18px;box-shadow:0 4px 14px rgba(15,23,42,.04);min-height:110px;">
-          <div style="font-size:12px;font-weight:700;color:#476183;text-transform:uppercase;">{label}</div>
-          <div style="font-size:28px;font-weight:800;color:#183153;margin-top:8px;">{value}</div>
-          <div style="font-size:12px;color:#74839b;margin-top:4px;">{help_text}</div>
+        <div class="mse-card mse-metric-card">
+          <div class="mse-eyebrow">{label}</div>
+          <div class="mse-metric-value">{value}</div>
+          <div class="mse-metric-help">{help_text}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -399,18 +399,28 @@ def pending_html(value: str, is_pending: bool) -> str:
     return f"<span style='color:{color};font-weight:700;'>{value}</span>"
 
 
-def render_sidebar(selected_month: str) -> str:
-    st.sidebar.markdown(
-        """
-        <style>
-          [data-testid="stSidebar"] { background: linear-gradient(180deg, #1f3968 0%, #243f74 100%); }
-          [data-testid="stSidebar"] * { color: #ffffff !important; }
-        </style>
+def empty_state(message: str) -> None:
+    st.markdown(
+        f"""
+        <div class="mse-empty">
+          <span>{message}</span>
+        </div>
         """,
         unsafe_allow_html=True,
     )
-    st.sidebar.markdown("## Portal MSE")
-    st.sidebar.caption(f"Mes ativo: {month_label(selected_month)}")
+
+
+def render_sidebar(selected_month: str) -> str:
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-brand-row">
+          <div class="sidebar-collapse">&laquo;</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown('<div class="sidebar-brand">Portal MSE</div>', unsafe_allow_html=True)
+    st.sidebar.markdown(f'<div class="sidebar-month">Mes ativo: {month_label(selected_month)}</div>', unsafe_allow_html=True)
 
     with st.sidebar.expander("Administrativo", expanded=True):
         page = st.radio(
@@ -436,8 +446,12 @@ def render_overview(selected_month: str) -> None:
     next_due = min((row["due_day"] for row in rows), default="-")
     orders = len([row for row in rows if row["order_number"]])
 
-    st.markdown("## Dashboard Executivo")
-    st.caption("Controle de Internet com geracao automatica por contrato.")
+    st.markdown('<div class="page-title">Controle de Internet</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-subtitle">Dashboard Executivo</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="page-caption">Visualizacao automatica dos contratos do mes com pendencias destacadas.</div>',
+        unsafe_allow_html=True,
+    )
 
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
@@ -453,7 +467,7 @@ def render_overview(selected_month: str) -> None:
 
     left, right = st.columns([1.5, 1])
     with left:
-        st.markdown("### Valor por obra")
+        st.markdown('<div class="section-title">Valor por obra</div>', unsafe_allow_html=True)
         if rows:
             chart_df = pd.DataFrame(
                 {
@@ -463,17 +477,17 @@ def render_overview(selected_month: str) -> None:
             ).groupby("Obra", as_index=True).sum()
             st.bar_chart(chart_df)
         else:
-            st.info("Nenhum contrato ativo no mes selecionado.")
+            empty_state("Nenhum contrato ativo no mes selecionado.")
 
     with right:
-        st.markdown("### Pendencias do mes")
+        st.markdown('<div class="section-title">Pendencias do mes</div>', unsafe_allow_html=True)
         pending = [
             row
             for row in rows
             if row["amount"] is None or not row["order_number"] or row["approved"] is None or row["s1"] is None
         ]
         if not pending:
-            st.success("Nao ha pendencias neste mes.")
+            st.markdown('<div class="mse-ok-box">Nao ha pendencias neste mes.</div>', unsafe_allow_html=True)
         else:
             for row in pending[:8]:
                 fields = []
@@ -487,7 +501,7 @@ def render_overview(selected_month: str) -> None:
                     fields.append("S1")
                 st.markdown(f"**{row['company']}**  \n{row['project']}  \nPendente: {', '.join(fields)}")
 
-    st.markdown("### Contratos do mes")
+    st.markdown('<div class="section-title" style="margin-top:28px;">Contratos do mes</div>', unsafe_allow_html=True)
     header = st.columns([1.0, 1.2, 2.1, 0.8, 1.2, 1.4, 1.1, 1.0, 0.9, 0.8, 0.8])
     labels = [
         "Status",
@@ -509,7 +523,7 @@ def render_overview(selected_month: str) -> None:
         )
 
     if not rows:
-        st.info("Nenhum contrato disponivel neste mes.")
+        empty_state("Nenhum contrato disponivel neste mes.")
         return
 
     for row in rows:
@@ -748,39 +762,252 @@ def main() -> None:
     st.markdown(
         """
         <style>
-          .stApp { background: #f4f7fb; }
-          .block-container { padding-top: 1.1rem; padding-bottom: 3rem; }
-          div[data-testid="stForm"] { background:#ffffff; border:1px solid #dde6f2; border-radius:18px; padding:18px; }
+          @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+          :root{
+            --bg:#e8eaee; --card:#fff; --line:#e4e7ec; --line-2:#eef0f3; --chip:#eef0f3;
+            --navy:#16243c; --navy-2:#1f3a63; --ink:#192231; --body:#4d5868; --mut:#98a1b0; --mut-2:#aab2bf;
+            --blue:#2563eb; --green:#1f9d57; --amber:#d9911a; --red:#d23b3b;
+            --r:14px; --shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04); --maxw:1440px;
+          }
+          html, body, [class*="css"]  { font-family: "IBM Plex Sans", sans-serif; }
+          .stApp { background: var(--bg); }
+          [data-testid="stAppViewContainer"] { background:var(--bg); }
+          [data-testid="stHeader"] { background: transparent; }
+          [data-testid="stToolbar"] { right: 18px; top: 18px; }
+          .block-container { padding-top: 0.6rem; padding-bottom: 3rem; max-width: var(--maxw); }
+          div[data-testid="stForm"] { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:var(--shadow); }
+          label, [data-testid="stWidgetLabel"] p, .stNumberInput label p, .stTextInput label p, .stDateInput label p, .stSelectbox label p, .stTextArea label p {
+            font-family:"IBM Plex Mono", monospace !important;
+            text-transform:uppercase;
+            letter-spacing:2px;
+            font-size:10px !important;
+            color:var(--mut) !important;
+            font-weight:500 !important;
+          }
+          .stTextInput input, .stNumberInput input, .stTextArea textarea, .stDateInput input, .stSelectbox [data-baseweb="select"] > div {
+            border:1px solid var(--line) !important;
+            border-radius:10px !important;
+            background:#fff !important;
+            color:var(--ink) !important;
+            box-shadow:none !important;
+          }
+          .stButton button, .stDownloadButton button, .stForm button[kind="primary"] {
+            border-radius:10px !important;
+            border:1px solid var(--line) !important;
+            box-shadow:var(--shadow) !important;
+            font-weight:600 !important;
+          }
+          .stButton button[kind="primary"], .stForm button[kind="primary"] {
+            background:var(--blue) !important;
+            color:#fff !important;
+            border-color:var(--blue) !important;
+          }
+          [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #1f3968 0%, #27457d 100%);
+            min-width: 288px !important;
+            max-width: 288px !important;
+            border-right: 0;
+          }
+          [data-testid="stSidebarContent"] { padding-top: 0.75rem; }
+          [data-testid="stSidebar"] * { color:#ffffff !important; }
+          .sidebar-brand-row { display:flex; justify-content:center; margin:2px 0 28px; }
+          .sidebar-collapse {
+            width:100%;
+            text-align:center;
+            font-size:30px;
+            font-weight:800;
+            color:#ffffff;
+            opacity:.95;
+          }
+          .sidebar-brand { font-size:38px; font-weight:800; margin:6px 0 10px; }
+          .sidebar-month { color:rgba(255,255,255,.7); font-size:18px; margin-bottom:18px; }
+          [data-testid="stSidebar"] details {
+            background:#202631;
+            border:1px solid rgba(255,255,255,.18);
+            border-radius:10px;
+            overflow:hidden;
+          }
+          [data-testid="stSidebar"] summary {
+            font-weight:700;
+            padding:14px 16px;
+          }
+          [data-testid="stSidebar"] .stRadio > div {
+            background: transparent;
+            padding: 10px 10px 14px;
+          }
+          [data-testid="stSidebar"] .stRadio label {
+            background: transparent;
+            border-radius: 12px;
+            padding: 8px 10px;
+            margin-bottom: 4px;
+          }
+          [data-testid="stSidebar"] .stRadio label:hover {
+            background: rgba(255,255,255,.08);
+          }
+          [data-testid="stSidebar"] .stButton button {
+            background:#202631;
+            border:1px solid rgba(255,255,255,.18);
+            border-radius:10px;
+            color:#ffffff;
+          }
+          .top-shell {
+            height:58px;
+            background:#12151c;
+            border-radius:0;
+            margin: -10px -999rem 18px -999rem;
+            padding:0 999rem;
+            display:flex;
+            align-items:center;
+            justify-content:flex-end;
+          }
+          .top-shell span {
+            color:#f8fafc;
+            font-size:14px;
+            font-weight:600;
+            opacity:.92;
+          }
+          .hero-grid {
+            display:grid;
+            grid-template-columns: 320px 1fr;
+            gap: 18px;
+            align-items:end;
+            margin-bottom: 18px;
+          }
+          .month-shell {
+            background:#242732;
+            border-radius:10px;
+            padding:10px 14px 6px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+          }
+          .month-shell label, .month-shell div, .month-shell p, .month-shell input { color:#ffffff !important; }
+          .month-shell input {
+            background:#242732 !important;
+            border:0 !important;
+            font-family:"IBM Plex Mono", monospace !important;
+            font-size:18px !important;
+            font-weight:600 !important;
+          }
+          .title-shell {
+            padding-left:18px;
+          }
+          .page-title {
+            font-size:46px;
+            line-height:1;
+            font-weight:800;
+            color:#f3f6fb;
+            margin:0 0 10px;
+          }
+          .page-subtitle {
+            font-size:32px;
+            font-weight:800;
+            color:#ffffff;
+            margin-top:18px;
+          }
+          .page-caption {
+            color:rgba(255,255,255,.78);
+            margin:8px 0 24px;
+            font-size:14px;
+          }
+          .section-title {
+            font-size:26px;
+            font-weight:800;
+            color:#f7f9fc;
+            margin:10px 0 14px;
+          }
+          .mse-card {
+            background:var(--card);
+            border:1px solid var(--line);
+            border-radius:16px;
+            box-shadow:var(--shadow);
+          }
+          .mse-metric-card {
+            padding:18px 18px 16px;
+            min-height:112px;
+          }
+          .mse-eyebrow {
+            font-family:"IBM Plex Mono", monospace;
+            text-transform:uppercase;
+            letter-spacing:1.6px;
+            font-size:10px;
+            color:#6d7a8d;
+            font-weight:600;
+          }
+          .mse-metric-value {
+            font-size:24px;
+            font-weight:700;
+            color:#17356c;
+            margin-top:16px;
+          }
+          .mse-metric-help {
+            font-size:13px;
+            color:#738198;
+            margin-top:8px;
+          }
+          .mse-empty {
+            border:1px dashed #bdd5f6;
+            background:#dcebff;
+            color:#3384ff;
+            border-radius:10px;
+            padding:16px 18px;
+            font-size:14px;
+          }
+          .mse-ok-box {
+            border-radius:10px;
+            background:rgba(31,157,87,.10);
+            color:#28bf5b;
+            padding:16px 18px;
+            font-size:14px;
+          }
+          div[data-testid="stVerticalBlock"] div[data-testid="stMarkdownContainer"] p {
+            color:var(--body);
+          }
+          [data-testid="stAlert"] p { margin:0; }
+          [data-testid="stAlert"] {
+            border-radius:12px;
+            border:0;
+          }
+          [data-testid="column"] { position:relative; }
+          .content-shell {
+            background: linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,0) 100%);
+          }
+          hr { border-color:var(--line-2); }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-    top = st.columns([1.1, 3.8])
+    st.markdown('<div class="top-shell"><span>Share &nbsp;&nbsp; ☆ &nbsp;&nbsp; ✎ &nbsp;&nbsp; GitHub</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="content-shell">', unsafe_allow_html=True)
+
+    top = st.columns([1.2, 4.2])
     with top[0]:
+        st.markdown('<div class="month-shell">', unsafe_allow_html=True)
         selected_month = month_picker(
             "Mes de referencia",
             key="selected_month_picker",
             value=st.session_state.get("selected_month", month_key()),
         )
+        st.markdown("</div>", unsafe_allow_html=True)
     st.session_state["selected_month"] = selected_month
     with top[1]:
-        st.markdown("## Controle de Internet")
-        st.caption("Portal administrativo com cadastro protegido e base persistida em SQLite.")
+        st.markdown('<div class="title-shell"></div>', unsafe_allow_html=True)
 
     page = render_sidebar(selected_month)
 
     if page == "Visao Geral":
         render_overview(selected_month)
+        st.markdown("</div>", unsafe_allow_html=True)
         return
 
     if not render_auth_gate():
+        st.markdown("</div>", unsafe_allow_html=True)
         return
 
     if page == "Linhas Ativas e Acessos":
         render_lines_page(selected_month)
     else:
         render_contracts_page(selected_month)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
