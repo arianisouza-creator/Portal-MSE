@@ -411,29 +411,25 @@ def empty_state(message: str) -> None:
 
 
 def render_sidebar(selected_month: str) -> str:
-    st.sidebar.markdown(
+    st.markdown(
         """
-        <div class="sidebar-brand-row">
-          <div class="sidebar-collapse">&laquo;</div>
-        </div>
+        <div class="nav-top-icon">&laquo;</div>
+        <div class="nav-brand">Portal MSE</div>
         """,
         unsafe_allow_html=True,
     )
-    st.sidebar.markdown('<div class="sidebar-brand">Portal MSE</div>', unsafe_allow_html=True)
-    st.sidebar.markdown(f'<div class="sidebar-month">Mes ativo: {month_label(selected_month)}</div>', unsafe_allow_html=True)
-
-    with st.sidebar.expander("Administrativo", expanded=True):
-        page = st.radio(
-            "Menu",
-            options=["Visao Geral", "Linhas Ativas e Acessos", "Contratos"],
-            label_visibility="collapsed",
-        )
-
+    st.markdown(f'<div class="nav-month">Mes ativo: {month_label(selected_month)}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-card-title">Administrativo</div>', unsafe_allow_html=True)
+    page = st.radio(
+        "Menu",
+        options=["Visao Geral", "Linhas Ativas e Acessos", "Contratos"],
+        label_visibility="collapsed",
+        key="main_nav",
+    )
     if auth_ok():
-        st.sidebar.button("Sair do cadastro", on_click=logout, use_container_width=True)
+        st.button("Sair do cadastro", on_click=logout, use_container_width=True, key="logout_main_nav")
     else:
-        st.sidebar.caption("Cadastro protegido")
-
+        st.markdown('<div class="nav-protected">Cadastro protegido</div>', unsafe_allow_html=True)
     return page
 
 
@@ -446,12 +442,8 @@ def render_overview(selected_month: str) -> None:
     next_due = min((row["due_day"] for row in rows), default="-")
     orders = len([row for row in rows if row["order_number"]])
 
-    st.markdown('<div class="page-title">Controle de Internet</div>', unsafe_allow_html=True)
-    st.markdown('<div class="page-subtitle">Dashboard Executivo</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="page-caption">Visualizacao automatica dos contratos do mes com pendencias destacadas.</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="page-subtitle dark">Dashboard Executivo</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-caption dark">Visualizacao automatica dos contratos do mes com pendencias destacadas.</div>', unsafe_allow_html=True)
 
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
@@ -774,7 +766,8 @@ def main() -> None:
           [data-testid="stAppViewContainer"] { background:var(--bg); }
           [data-testid="stHeader"] { background: transparent; }
           [data-testid="stToolbar"] { right: 18px; top: 18px; }
-          .block-container { padding-top: 0.6rem; padding-bottom: 3rem; max-width: var(--maxw); }
+          [data-testid="stSidebar"] { display:none !important; }
+          .block-container { padding-top: 0; padding-bottom: 2rem; max-width: 100%; padding-left: 0; padding-right: 0; }
           div[data-testid="stForm"] { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:var(--shadow); }
           label, [data-testid="stWidgetLabel"] p, .stNumberInput label p, .stTextInput label p, .stDateInput label p, .stSelectbox label p, .stTextArea label p {
             font-family:"IBM Plex Mono", monospace !important;
@@ -802,63 +795,26 @@ def main() -> None:
             color:#fff !important;
             border-color:var(--blue) !important;
           }
-          [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #1f3968 0%, #27457d 100%);
-            min-width: 288px !important;
-            max-width: 288px !important;
-            border-right: 0;
+          .app-shell {
+            display:grid;
+            grid-template-columns: 270px minmax(0,1fr);
+            min-height:100vh;
           }
-          [data-testid="stSidebarContent"] { padding-top: 0.75rem; }
-          [data-testid="stSidebar"] * { color:#ffffff !important; }
-          .sidebar-brand-row { display:flex; justify-content:center; margin:2px 0 28px; }
-          .sidebar-collapse {
-            width:100%;
-            text-align:center;
-            font-size:30px;
-            font-weight:800;
-            color:#ffffff;
-            opacity:.95;
+          .left-shell {
+            background:linear-gradient(180deg,#213f76 0%,#2a4a84 100%);
+            padding:22px 20px 26px;
           }
-          .sidebar-brand { font-size:38px; font-weight:800; margin:6px 0 10px; }
-          .sidebar-month { color:rgba(255,255,255,.7); font-size:18px; margin-bottom:18px; }
-          [data-testid="stSidebar"] details {
-            background:#202631;
-            border:1px solid rgba(255,255,255,.18);
-            border-radius:10px;
-            overflow:hidden;
-          }
-          [data-testid="stSidebar"] summary {
-            font-weight:700;
-            padding:14px 16px;
-          }
-          [data-testid="stSidebar"] .stRadio > div {
-            background: transparent;
-            padding: 10px 10px 14px;
-          }
-          [data-testid="stSidebar"] .stRadio label {
-            background: transparent;
-            border-radius: 12px;
-            padding: 8px 10px;
-            margin-bottom: 4px;
-          }
-          [data-testid="stSidebar"] .stRadio label:hover {
-            background: rgba(255,255,255,.08);
-          }
-          [data-testid="stSidebar"] .stButton button {
-            background:#202631;
-            border:1px solid rgba(255,255,255,.18);
-            border-radius:10px;
-            color:#ffffff;
+          .right-shell {
+            background:var(--bg);
+            min-width:0;
           }
           .top-shell {
-            height:58px;
-            background:#12151c;
-            border-radius:0;
-            margin: -10px -999rem 18px -999rem;
-            padding:0 999rem;
+            height:74px;
+            background:#15181f;
             display:flex;
             align-items:center;
             justify-content:flex-end;
+            padding:0 28px;
           }
           .top-shell span {
             color:#f8fafc;
@@ -866,17 +822,18 @@ def main() -> None:
             font-weight:600;
             opacity:.92;
           }
-          .hero-grid {
-            display:grid;
-            grid-template-columns: 320px 1fr;
-            gap: 18px;
-            align-items:end;
-            margin-bottom: 18px;
+          .hero-shell {
+            background: radial-gradient(640px 360px at 85% -30%, rgba(64,120,210,.5), transparent 62%), linear-gradient(118deg,#13223b,#193053 68%,#1f3a63);
+            padding:28px 28px 30px;
+          }
+          .content-shell {
+            padding:28px;
           }
           .month-shell {
             background:#242732;
             border-radius:10px;
-            padding:10px 14px 6px;
+            padding:12px 16px 8px;
+            width:280px;
             box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
           }
           .month-shell label, .month-shell div, .month-shell p, .month-shell input { color:#ffffff !important; }
@@ -887,31 +844,31 @@ def main() -> None:
             font-size:18px !important;
             font-weight:600 !important;
           }
-          .title-shell {
-            padding-left:18px;
-          }
+          .hero-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
           .page-title {
-            font-size:46px;
+            font-size:54px;
             line-height:1;
             font-weight:800;
             color:#f3f6fb;
-            margin:0 0 10px;
+            margin:38px 0 10px;
           }
           .page-subtitle {
             font-size:32px;
             font-weight:800;
-            color:#ffffff;
+            color:#192231;
             margin-top:18px;
           }
+          .page-subtitle.dark { color:#ffffff; margin-top:14px; }
           .page-caption {
-            color:rgba(255,255,255,.78);
+            color:#667085;
             margin:8px 0 24px;
             font-size:14px;
           }
+          .page-caption.dark { color:rgba(255,255,255,.76); }
           .section-title {
             font-size:26px;
             font-weight:800;
-            color:#f7f9fc;
+            color:#192231;
             margin:10px 0 14px;
           }
           .mse-card {
@@ -966,48 +923,126 @@ def main() -> None:
             border-radius:12px;
             border:0;
           }
-          [data-testid="column"] { position:relative; }
-          .content-shell {
-            background: linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,0) 100%);
+          [data-testid="column"] { position:relative; min-width:0; }
+          .nav-top-icon {
+            text-align:right;
+            font-size:34px;
+            line-height:1;
+            color:#ffffff;
+            font-weight:800;
+            margin-bottom:56px;
+          }
+          .nav-brand {
+            color:#ffffff;
+            font-size:28px;
+            font-weight:800;
+            margin-bottom:18px;
+          }
+          .nav-month {
+            color:rgba(255,255,255,.78);
+            font-size:14px;
+            margin-bottom:24px;
+          }
+          .nav-card-title {
+            background:#1f232d;
+            color:#ffffff;
+            padding:14px 16px;
+            border:1px solid rgba(255,255,255,.14);
+            border-bottom:none;
+            border-radius:12px 12px 0 0;
+            font-size:15px;
+            font-weight:700;
+          }
+          .left-shell .stRadio > div {
+            background:#232834;
+            border:1px solid rgba(255,255,255,.14);
+            border-radius:0 0 12px 12px;
+            padding:16px 14px;
+          }
+          .left-shell .stRadio label {
+            padding:10px 8px;
+            border-radius:10px;
+          }
+          .left-shell .stRadio label:hover { background:rgba(255,255,255,.05); }
+          .left-shell .stRadio p {
+            color:#ffffff !important;
+            letter-spacing:1.6px !important;
+          }
+          .left-shell .stButton button {
+            margin-top:14px;
+            background:#1f232d !important;
+            color:#ffffff !important;
+            border:1px solid rgba(255,255,255,.14) !important;
+          }
+          .nav-protected {
+            color:rgba(255,255,255,.68);
+            font-size:14px;
+            margin-top:14px;
+          }
+          .overview-table-head {
+            font-family:"IBM Plex Mono", monospace;
+            text-transform:uppercase;
+            letter-spacing:1.4px;
+            color:#98a1b0;
+            font-size:10px;
+            font-weight:600;
+            padding-bottom:8px;
+          }
+          .table-row {
+            background:#ffffff;
+            border:1px solid var(--line);
+            border-radius:14px;
+            box-shadow:var(--shadow);
+            padding:10px 12px;
+            margin-bottom:10px;
           }
           hr { border-color:var(--line-2); }
         </style>
         """,
         unsafe_allow_html=True,
     )
+    st.markdown('<div class="app-shell">', unsafe_allow_html=True)
+    left_col, right_col = st.columns([0.95, 5.05], gap="small")
 
-    st.markdown('<div class="top-shell"><span>Share &nbsp;&nbsp; ☆ &nbsp;&nbsp; ✎ &nbsp;&nbsp; GitHub</span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="content-shell">', unsafe_allow_html=True)
+    selected_month = st.session_state.get("selected_month", month_key())
 
-    top = st.columns([1.2, 4.2])
-    with top[0]:
-        st.markdown('<div class="month-shell">', unsafe_allow_html=True)
-        selected_month = month_picker(
-            "Mes de referencia",
-            key="selected_month_picker",
-            value=st.session_state.get("selected_month", month_key()),
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
-    st.session_state["selected_month"] = selected_month
-    with top[1]:
-        st.markdown('<div class="title-shell"></div>', unsafe_allow_html=True)
+    with left_col:
+        st.markdown('<div class="left-shell">', unsafe_allow_html=True)
+        page = render_sidebar(selected_month)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    page = render_sidebar(selected_month)
+    with right_col:
+        st.markdown('<div class="right-shell">', unsafe_allow_html=True)
+        st.markdown('<div class="top-shell"><span>Share &nbsp;&nbsp; ☆ &nbsp;&nbsp; ✎ &nbsp;&nbsp; GitHub</span></div>', unsafe_allow_html=True)
+        st.markdown('<div class="hero-shell">', unsafe_allow_html=True)
+        hero_cols = st.columns([1.15, 3.85], gap="large")
+        with hero_cols[0]:
+            st.markdown('<div class="month-shell">', unsafe_allow_html=True)
+            selected_month = month_picker(
+                "Mes de referencia",
+                key="selected_month_picker",
+                value=st.session_state.get("selected_month", month_key()),
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+        st.session_state["selected_month"] = selected_month
+        with hero_cols[1]:
+            st.markdown('<div class="page-title">Controle de Internet</div>', unsafe_allow_html=True)
+            st.markdown('<div class="page-subtitle dark">Painel Administrativo MSE</div>', unsafe_allow_html=True)
+            st.markdown('<div class="page-caption dark">Acompanhamento mensal de contratos, linhas ativas e credenciais.</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="content-shell">', unsafe_allow_html=True)
 
-    if page == "Visao Geral":
-        render_overview(selected_month)
-        st.markdown("</div>", unsafe_allow_html=True)
-        return
+        if page == "Visao Geral":
+            render_overview(selected_month)
+        else:
+            if render_auth_gate():
+                if page == "Linhas Ativas e Acessos":
+                    render_lines_page(selected_month)
+                else:
+                    render_contracts_page(selected_month)
 
-    if not render_auth_gate():
-        st.markdown("</div>", unsafe_allow_html=True)
-        return
-
-    if page == "Linhas Ativas e Acessos":
-        render_lines_page(selected_month)
-    else:
-        render_contracts_page(selected_month)
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
