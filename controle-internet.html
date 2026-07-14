@@ -1429,13 +1429,13 @@
       if (!rateioEntries.length) {
         rateioBars.innerHTML = `<div class="empty-state"><b>Sem linhas ativas no rateio.</b>As linhas cadastradas estao marcadas como inativas.</div>`;
       } else {
-        const maxCount = Math.max(...rateioEntries.map(([, count]) => count));
+        const totalActiveLines = activeLines.length;
         rateioBars.innerHTML = rateioEntries.map(([center, count]) => {
-          const pct = formatPercentNumber(100 / count);
+          const pct = formatPercentNumber(totalActiveLines ? (count / totalActiveLines) * 100 : 0);
           return `
             <div class="baritem">
-              <div class="barlabel"><span>${center}</span><b>${count} linha(s) | ${pct}% cada</b></div>
-              <div class="track"><div class="fill" style="width:${maxCount ? count / maxCount * 100 : 0}%"></div></div>
+              <div class="barlabel"><span>${center}</span><b>${count} de ${totalActiveLines} linha(s) | ${pct}% do total</b></div>
+              <div class="track"><div class="fill" style="width:${pct.replace(',', '.')}%"></div></div>
             </div>
           `;
         }).join('');
