@@ -243,8 +243,8 @@
         <button class="sidetoggle" id="sideToggle" title="Recolher menu" aria-label="Recolher menu" data-icon="menu"></button>
         <span class="ico" data-icon="wifi"></span>
         <span class="lab">
-          <b>Dashboard Executivo</b>
-          <small>Controle de Internet</small>
+          <b>Controle de Telefonia e Internet</b>
+          <small>Controle mensal operacional</small>
         </span>
       </div>
 
@@ -263,7 +263,7 @@
 
       <div class="view on" id="view-overview">
       <div class="hero">
-        <h1 id="pageTitle">Dashboard Executivo</h1>
+        <h1 id="pageTitle">Controle de Telefonia e Internet</h1>
         <p id="pageSubtitle">Controle mensal iniciado do zero para o mes selecionado.</p>
       </div>
 
@@ -334,6 +334,7 @@
         <article class="card pad">
           <div class="chead"><span class="ti2">Linhas ativas</span><span class="eyebrow">Resumo</span></div>
           <div class="list" id="activeLines"></div>
+          <div class="table-foot" style="padding-top:10px">Linhas cadastradas: <span id="activeLinesCount">0</span></div>
         </article>
       </section>
 
@@ -390,6 +391,18 @@
             <h1>Linhas Ativas e Acessos</h1>
             <p>Area protegida para credenciais, linhas e acessos operacionais do mes selecionado.</p>
           </div>
+          <section class="card pad" style="margin-bottom:14px">
+            <div class="chead"><span class="ti2">Linhas ativas</span><span class="eyebrow">Cadastro do mes</span></div>
+            <form id="activeLinesForm" class="mini-form">
+              <label>Numero<input name="numeroLinha" required placeholder="43 99999-0000"></label>
+              <label>Responsavel<input name="responsavelLinha" required placeholder="Nome"></label>
+              <label>Centro de custo<input name="centroLinha" required placeholder="ADM, MKT, DTE"></label>
+              <label>Percentual<input name="percentualLinha" readonly placeholder="Automatico"></label>
+              <div style="grid-column:1 / -1;display:flex;justify-content:flex-end">
+                <button class="primary" type="submit"><span data-icon="plus"></span>Adicionar linha</button>
+              </div>
+            </form>
+          </section>
           <div class="cred-grid">
             <section class="card pad">
               <div class="chead"><span class="ti2">Resumo das linhas ativas</span><span class="eyebrow" id="accessMonthLabel">Mes atual</span></div>
@@ -405,8 +418,8 @@
           <h3>Area protegida</h3>
           <p>Entre com usuario e senha para acessar esta aba de cadastro.</p>
           <form id="tabLoginForm" class="formgrid">
-            <label>Usuario<input name="tabUser" placeholder="ADM"></label>
-            <label>Senha<input name="tabPass" type="password" placeholder="mse2026"></label>
+            <label>Usuario<input name="tabUser" autocomplete="username"></label>
+            <label>Senha<input name="tabPass" type="password" autocomplete="current-password"></label>
             <button class="primary" type="submit">Entrar</button>
           </form>
           <div class="auth-error" id="tabAuthError" style="display:none">Usuario ou senha invalidos.</div>
@@ -435,13 +448,7 @@
             <label>Mes de inicio<input name="inicioContrato" type="month" required></label>
             <label>Mes/ano inativo<input name="fimContrato" type="month"></label>
             <label>Contato<input name="contatoContrato" placeholder="Telefone, WhatsApp ou responsavel"></label>
-            <label>Login<input name="loginContrato" placeholder="Login da internet"></label>
-            <label>Senha<input name="senhaContrato" type="password" placeholder="Senha da internet"></label>
             <label style="grid-column:1 / -1">Observacao<input name="obsContrato" placeholder="Observacao do contrato"></label>
-            <div style="grid-column:1 / -1">
-              <div class="chead" style="margin:8px 0 0"><span class="ti2" style="font-size:14px">Linhas ativas</span><button class="ghost" type="button" id="addLineBtn">Adicionar linha</button></div>
-              <div class="line-grid" id="lineFields"></div>
-            </div>
             <div style="grid-column:1 / -1;display:flex;justify-content:flex-end">
               <button class="primary" type="submit"><span data-icon="plus"></span>Salvar contrato</button>
             </div>
@@ -488,7 +495,6 @@
           <label>Valor<input name="valor" placeholder="Ex.: 1339,94"></label>
           <label>Pedido<input name="pedido" placeholder="Ex.: 114735"></label>
           <label>Contato<input name="contato" placeholder="Telefone, WhatsApp ou responsavel"></label>
-          <label>Linha ativa<input name="linhaAtiva" placeholder="Ex.: Link principal Sede"></label>
           <label>Login de acesso<input name="loginAcesso" placeholder="Ex.: usuario@empresa.com"></label>
           <label>Senha de acesso<input name="senhaAcesso" type="password" placeholder="Senha protegida"></label>
           <label>Aprovado
@@ -598,6 +604,7 @@
     const PROTECTED_PASS = 'mse2026';
     const monthPicker = document.getElementById('monthPicker');
     const monthOverrides = {};
+    const monthLines = {};
     const contracts = [];
 
     function defaultMonth() {
@@ -612,6 +619,11 @@
     function ensureMonth(monthKey) {
       if (!monthOverrides[monthKey]) monthOverrides[monthKey] = {};
       return monthOverrides[monthKey];
+    }
+
+    function ensureMonthLines(monthKey) {
+      if (!monthLines[monthKey]) monthLines[monthKey] = [];
+      return monthLines[monthKey];
     }
 
     function currentMonthKey() {
@@ -644,11 +656,9 @@
         pedido: override.pedido ?? '',
         aprovado: Object.prototype.hasOwnProperty.call(override, 'aprovado') ? override.aprovado : null,
         s1: Object.prototype.hasOwnProperty.call(override, 's1') ? override.s1 : null,
-        linhaAtiva: (contract.linhas && contract.linhas.length) ? contract.linhas[0].numero : '',
-        loginAcesso: contract.loginContrato || '',
-        senhaAcesso: contract.senhaContrato || '',
-        obs: contract.obsContrato || '',
-        linhas: contract.linhas || []
+        loginAcesso: override.loginAcesso || '',
+        senhaAcesso: override.senhaAcesso || '',
+        obs: Object.prototype.hasOwnProperty.call(override, 'obs') ? override.obs : (contract.obsContrato || '')
       };
     }
 
@@ -662,28 +672,14 @@
       return `${contract.empresa} | ${contract.obra} | ${contract.numeroContrato}`;
     }
 
-    function addLineField(line = {}) {
-      const container = document.getElementById('lineFields');
-      const row = document.createElement('div');
-      row.className = 'line-row';
-      row.innerHTML = `
-        <label>Numero<input name="linhaNumero" value="${line.numero || ''}" placeholder="43 99999-0000"></label>
-        <label>Responsavel<input name="linhaResponsavel" value="${line.responsavel || ''}" placeholder="Nome"></label>
-        <label>Centro de custo<input name="linhaCentro" value="${line.centroCusto || ''}" placeholder="ADM"></label>
-        <label>Percentual<input name="linhaPercentual" value="${line.percentual || ''}" type="number" min="0" max="100" placeholder="16"></label>
-        <button class="ghost" type="button">Remover</button>
-      `;
-      row.querySelector('button').addEventListener('click', () => row.remove());
-      container.appendChild(row);
+    function centerCount(value) {
+      return (value || '').split(',').map(item => item.trim()).filter(Boolean).length;
     }
 
-    function collectLines() {
-      return Array.from(document.querySelectorAll('#lineFields .line-row')).map(row => ({
-        numero: row.querySelector('input[name="linhaNumero"]').value,
-        responsavel: row.querySelector('input[name="linhaResponsavel"]').value,
-        centroCusto: row.querySelector('input[name="linhaCentro"]').value,
-        percentual: row.querySelector('input[name="linhaPercentual"]').value
-      })).filter(line => line.numero || line.responsavel || line.centroCusto || line.percentual);
+    function linePercent(value) {
+      const count = centerCount(value);
+      if (!count) return '';
+      return (100 / count).toFixed(count > 2 ? 2 : 0);
     }
 
     function monthLabel(monthKey) {
@@ -727,6 +723,7 @@
 
     function renderKpis(rows) {
       const info = kpiData(rows);
+      const lines = ensureMonthLines(currentMonthKey());
       document.getElementById('kActive').textContent = info.active;
       document.getElementById('kCost').textContent = brl(info.totalValue);
       document.getElementById('kOperators').textContent = info.operators;
@@ -735,6 +732,7 @@
       document.getElementById('kMonth').textContent = monthLabel(currentMonthKey());
       document.getElementById('miniIndicators').textContent = `${info.active} contratos ativos`;
       document.getElementById('pageSubtitle').textContent = `Mes de referencia: ${monthLabel(currentMonthKey())}. Cadastre tudo que voce precisa para este fechamento.`;
+      document.getElementById('activeLinesCount').textContent = lines.length;
     }
 
     function renderBars(rows) {
@@ -795,39 +793,41 @@
     }
 
     function renderActiveLines(rows) {
-      const withLines = rows.filter(row => row.linhaAtiva);
+      const lines = ensureMonthLines(currentMonthKey());
       const summary = document.getElementById('activeLines');
       const accessSummary = document.getElementById('activeSummary');
       const credentials = document.getElementById('credentialsList');
       document.getElementById('accessMonthLabel').textContent = monthLabel(currentMonthKey());
-      if (!withLines.length) {
-        summary.innerHTML = `<div class="empty-state"><b>Sem linhas ativas cadastradas.</b>Adicione a descricao da linha no cadastro do contrato.</div>`;
+      if (!lines.length) {
+        summary.innerHTML = `<div class="empty-state"><b>Sem linhas ativas cadastradas.</b>Cadastre as linhas diretamente nesta aba protegida.</div>`;
         accessSummary.innerHTML = `<div class="empty-state"><b>Nenhuma linha listada.</b>Cadastre linhas ativas para montar o resumo operacional.</div>`;
-        credentials.innerHTML = `<div class="empty-state"><b>Nenhuma credencial registrada.</b>Preencha login e senha no cadastro do contrato quando necessario.</div>`;
+        credentials.innerHTML = `<div class="empty-state"><b>Nenhuma credencial registrada.</b>Preencha login e senha no registro mensal quando necessario.</div>`;
         return;
       }
-      summary.innerHTML = withLines.slice(0, 4).map(row => `
+      summary.innerHTML = lines.slice(0, 4).map(line => `
         <div class="li">
           <div>
-            <b class="link">${row.linhaAtiva}</b>
-            <div class="lisub">${row.obra || 'Sem obra'} | ${row.empresa || 'Sem empresa'}</div>
+            <b class="link">${line.numero}</b>
+            <div class="lisub">${line.responsavel || 'Sem responsavel'} | ${line.centroCusto}</div>
           </div>
-          <div class="tag ok">Ativa</div>
+          <div class="tag ok">${line.percentual}% por C.C</div>
         </div>
       `).join('');
-      accessSummary.innerHTML = withLines.map(row => `
+      accessSummary.innerHTML = lines.map((line, index) => `
         <div class="cred-item">
-          <h4>${row.empresa}</h4>
-          <div class="cred-row"><span>Obra</span><b>${row.obra || '-'}</b></div>
-          <div class="cred-row"><span>Empresa</span><b>${row.empresa || '-'}</b></div>
-          <div class="cred-row"><span>Contrato</span><b>${row.contrato || '-'}</b></div>
-          <div class="cred-row"><span>Vencimento</span><b>${row.vencimento || '-'}</b></div>
-          ${(row.linhas || []).map(line => `
-            <div class="cred-row"><span>${line.numero} - ${line.responsavel}</span><b>${line.centroCusto} - ${line.percentual}%</b></div>
-          `).join('')}
+          <h4>Linha ${index + 1}</h4>
+          <div class="cred-row"><span>Numero</span><b>${line.numero || '-'}</b></div>
+          <div class="cred-row"><span>Responsavel</span><b>${line.responsavel || '-'}</b></div>
+          <div class="cred-row"><span>Centro de custo</span><b>${line.centroCusto || '-'}</b></div>
+          <div class="cred-row"><span>Percentual</span><b>${line.percentual || '-'}% por C.C</b></div>
         </div>
       `).join('');
-      credentials.innerHTML = withLines.map(row => `
+      const withCredentials = rows.filter(row => row.loginAcesso || row.senhaAcesso || row.obs);
+      if (!withCredentials.length) {
+        credentials.innerHTML = `<div class="empty-state"><b>Nenhuma credencial registrada.</b>Preencha login e senha no registro mensal quando necessario.</div>`;
+        return;
+      }
+      credentials.innerHTML = withCredentials.map(row => `
         <div class="cred-item">
           <h4>${row.empresa}</h4>
           <div class="cred-row"><span>Login</span><b class="pwd">${row.loginAcesso || 'Nao informado'}</b></div>
@@ -870,8 +870,6 @@
           <div class="cred-row"><span>Obra</span><b>${contract.obra}</b></div>
           <div class="cred-row"><span>Vencimento</span><b>${contract.vencimento}</b></div>
           <div class="cred-row"><span>Contrato</span><b>${contract.numeroContrato}</b></div>
-          <div class="cred-row"><span>Login</span><b>${contract.loginContrato || '-'}</b></div>
-          <div class="cred-row"><span>Senha</span><b class="pwd">${maskPassword(contract.senhaContrato)}</b></div>
           <div class="cred-row"><span>Observacao</span><b>${contract.obsContrato || '-'}</b></div>
           <div style="margin-top:10px;display:flex;justify-content:flex-end">
             <button class="inline-btn" type="button" onclick="editContract(${contract.id})">Editar contrato</button>
@@ -904,7 +902,6 @@
       form.elements.valor.value = row.valor != null ? String(row.valor).replace('.', ',') : '';
       form.elements.pedido.value = row.pedido === '-' ? '' : (row.pedido || '');
       form.elements.contato.value = row.contato === '-' ? '' : (row.contato || '');
-      form.elements.linhaAtiva.value = row.linhaAtiva || '';
       form.elements.loginAcesso.value = row.loginAcesso || '';
       form.elements.senhaAcesso.value = row.senhaAcesso || '';
       form.elements.aprovado.value = row.aprovado == null ? 'pendente' : row.aprovado ? 'sim' : 'nao';
@@ -922,12 +919,7 @@
       form.elements.inicioContrato.value = contract.inicioContrato || '';
       form.elements.fimContrato.value = contract.fimContrato || '';
       form.elements.contatoContrato.value = contract.contato || '';
-      form.elements.loginContrato.value = contract.loginContrato || '';
-      form.elements.senhaContrato.value = contract.senhaContrato || '';
       form.elements.obsContrato.value = contract.obsContrato || '';
-      document.getElementById('lineFields').innerHTML = '';
-      (contract.linhas || []).forEach(addLineField);
-      if (!(contract.linhas || []).length) addLineField();
     }
 
     function renderTable(rows) {
@@ -1011,7 +1003,7 @@
       ensureMonth(currentMonthKey());
       const rows = filteredRows();
       const allRows = currentData();
-      document.getElementById('pageTitle').textContent = `Dashboard Executivo | ${monthLabel(currentMonthKey())}`;
+      document.getElementById('pageTitle').textContent = `Controle de Telefonia e Internet | ${monthLabel(currentMonthKey())}`;
       document.getElementById('countLabel').textContent = `${allRows.length} registros no mes`;
       document.getElementById('footCount').textContent = allRows.length;
       renderKpis(allRows);
@@ -1096,6 +1088,7 @@
       const label = monthLabel(currentMonthKey());
       if (!window.confirm(`Deseja zerar todos os registros do mes ${label}?`)) return;
       monthOverrides[currentMonthKey()] = {};
+      monthLines[currentMonthKey()] = [];
       selectedId = null;
       render();
     });
@@ -1113,10 +1106,7 @@
         inicioContrato: formData.inicioContrato,
         fimContrato: formData.fimContrato || '',
         contato: formData.contatoContrato || '',
-        loginContrato: formData.loginContrato || '',
-        senhaContrato: formData.senhaContrato || '',
-        obsContrato: formData.obsContrato || '',
-        linhas: collectLines()
+        obsContrato: formData.obsContrato || ''
       };
       if (editingContractId) {
         const index = contracts.findIndex(item => item.id === editingContractId);
@@ -1126,8 +1116,6 @@
       }
       editingContractId = null;
       event.currentTarget.reset();
-      document.getElementById('lineFields').innerHTML = '';
-      addLineField();
       renderContracts();
       render();
     });
@@ -1150,10 +1138,7 @@
           inicioContrato: targetMonth,
           fimContrato: '',
           contato: formData.contato || '-',
-          loginContrato: formData.loginAcesso || '',
-          senhaContrato: formData.senhaAcesso || '',
-          obsContrato: formData.obs || '',
-          linhas: formData.linhaAtiva ? [{ numero: formData.linhaAtiva, responsavel: '', centroCusto: '', percentual: '' }] : []
+          obsContrato: formData.obs || ''
         };
         contracts.push(contract);
       } else {
@@ -1162,15 +1147,16 @@
         contract.vencimento = formData.vencimento || '';
         contract.numeroContrato = formData.contrato || '-';
         contract.contato = formData.contato || '-';
-        contract.loginContrato = formData.loginAcesso || '';
-        contract.senhaContrato = formData.senhaAcesso || '';
         contract.obsContrato = formData.obs || '';
       }
       ensureMonth(targetMonth)[contract.id] = {
         valor: Number.isFinite(numericValue) ? numericValue : null,
         pedido: formData.pedido || '',
         aprovado: formData.aprovado === 'pendente' ? null : formData.aprovado === 'sim',
-        s1: formData.s1 === 'pendente' ? null : formData.s1 === 'sim'
+        s1: formData.s1 === 'pendente' ? null : formData.s1 === 'sim',
+        loginAcesso: formData.loginAcesso || '',
+        senhaAcesso: formData.senhaAcesso || '',
+        obs: formData.obs || ''
       };
       monthPicker.value = targetMonth;
       event.currentTarget.reset();
@@ -1178,8 +1164,24 @@
       render();
     });
 
-    document.getElementById('addLineBtn').addEventListener('click', () => addLineField());
-    addLineField();
+    document.getElementById('activeLinesForm').elements.centroLinha.addEventListener('input', event => {
+      document.getElementById('activeLinesForm').elements.percentualLinha.value = linePercent(event.target.value);
+    });
+
+    document.getElementById('activeLinesForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = Object.fromEntries(new FormData(event.currentTarget).entries());
+      ensureMonthLines(currentMonthKey()).push({
+        numero: formData.numeroLinha,
+        responsavel: formData.responsavelLinha,
+        centroCusto: formData.centroLinha,
+        percentual: linePercent(formData.centroLinha)
+      });
+      event.currentTarget.reset();
+      event.currentTarget.elements.percentualLinha.value = '';
+      render();
+    });
+
     refreshProtectedViews();
     openView('overview');
     render();
