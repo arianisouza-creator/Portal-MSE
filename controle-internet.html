@@ -9,119 +9,142 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#e8eaee; --card:#fff; --line:#e4e7ec; --line-2:#eef0f3; --chip:#eef0f3;
-      --navy:#16243c; --navy-2:#1f3a63;
+      --bg:#e8eaee; --card:#fff; --line:#e4e7ec; --line-2:#eef0f3;
+      --navy:#16243c; --navy-2:#1f3a63; --navy-3:#21385e;
       --ink:#192231; --body:#4d5868; --mut:#98a1b0; --mut-2:#aab2bf;
-      --blue:#2563eb; --green:#1f9d57; --amber:#d9911a; --red:#d23b3b;
+      --blue:#2563eb; --green:#1f9d57; --amber:#d9911a; --red:#d23b3b; --slate:#94a3b8;
       --r:14px; --shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04); --maxw:1440px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px "IBM Plex Sans",system-ui,sans-serif}
     button,input,select{font:inherit}
     button{cursor:pointer}
     button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-    .hdr{background:radial-gradient(640px 360px at 85% -30%, rgba(64,120,210,.5), transparent 62%), linear-gradient(118deg,#13223b,#193053 68%,#1f3a63);color:#fff}
-    .hinner{max-width:var(--maxw);margin:auto;padding:14px 28px;display:flex;align-items:center;gap:18px;min-height:70px}
-    .brand{display:flex;align-items:center;gap:13px;min-width:0}
-    .logo{width:38px;height:38px;border:1px solid rgba(255,255,255,.26);border-radius:10px;display:grid;place-items:center;font-weight:700;letter-spacing:.02em}
+    .hdr{background:radial-gradient(640px 360px at 85% -30%, rgba(64,120,210,.5), transparent 62%),linear-gradient(118deg,#13223b,#193053 68%,#1f3a63);color:#fff}
+    .hinner{max-width:var(--maxw);margin:auto;padding:14px 28px;display:flex;align-items:center;gap:18px;min-height:72px}
+    .brand{display:flex;align-items:center;gap:13px}
+    .logo{width:38px;height:38px;border:1px solid rgba(255,255,255,.26);border-radius:10px;display:grid;place-items:center;font-weight:700}
     .hsep{width:1px;height:34px;background:rgba(255,255,255,.22)}
-    .titles{min-width:0}
-    .titles .t{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
-    .titles .s{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:rgba(255,255,255,.68);text-transform:uppercase;margin-top:3px;white-space:nowrap}
+    .titles .t{font-size:15px;font-weight:700;text-transform:uppercase}
+    .titles .s,.clock,.status,.user small,.mini .meta,.eyebrow,.labelmono,.table-foot{font-family:"IBM Plex Mono",monospace}
+    .titles .s{font-size:10px;color:rgba(255,255,255,.68);text-transform:uppercase;margin-top:3px}
     .grow{flex:1}
-    .status,.clock,.user small{font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;color:rgba(255,255,255,.72)}
-    .status{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 10px;display:flex;align-items:center;gap:7px}
+    .status{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 10px;font-size:10px;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:rgba(255,255,255,.78)}
     .live{width:7px;height:7px;border-radius:999px;background:#35d17b;box-shadow:0 0 0 4px rgba(53,209,123,.15)}
-    .clock{min-width:76px;text-align:center}
+    .clock{font-size:10px;color:rgba(255,255,255,.72)}
     .ic{width:36px;height:36px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#fff;border-radius:10px;display:grid;place-items:center}
-    .ic svg,.ni svg,.ico svg,.sidetoggle svg,.fab svg,.rowact svg{width:18px;height:18px;stroke-width:1.8}
     .user{display:flex;align-items:center;gap:9px}
     .av{width:36px;height:36px;border-radius:999px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:700}
     .user b{display:block;font-size:13px}
     .ticker{background:#fff;border-bottom:1px solid var(--line)}
-    .trow{max-width:var(--maxw);margin:auto;padding:8px 28px;display:flex;align-items:center;gap:18px;overflow:hidden}
-    .greet{font-weight:600;font-size:13px;white-space:nowrap}
-    .tscroll{display:flex;gap:18px;overflow:hidden;white-space:nowrap;color:var(--body)}
-    .ti{font-family:"IBM Plex Mono",monospace;font-size:10.5px;text-transform:uppercase;display:flex;align-items:center;gap:7px}
-    .ti.ok{color:#197a45}
-    .shell{max-width:var(--maxw);margin:auto;display:grid;grid-template-columns:270px 1fr;gap:18px;padding:18px 28px 38px}
-    .side{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;height:calc(100vh - 118px);position:sticky;top:12px;overflow:auto}
-    .ssearch,.search{height:38px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;display:flex;align-items:center;gap:9px;color:var(--mut);padding:0 11px}
-    .ssearch{margin-bottom:14px}
-    .search input{border:0;background:transparent;width:100%;outline:0;color:var(--ink)}
-    .grp{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--mut);letter-spacing:1.6px;margin:18px 8px 8px}
-    .nv{height:38px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:10px;color:var(--body);transition:.14s ease}
-    .nv:hover{background:#f1f3f5;transform:translateY(-1px)}
-    .nv.on{background:#e9f1fe;color:#1a4fd6;font-weight:600}
-    .ni{width:20px;height:20px;display:grid;place-items:center;color:currentColor}
-    .nl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .trow{max-width:var(--maxw);margin:auto;padding:14px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .mini{display:flex;align-items:center;gap:12px;padding-right:12px;border-right:1px solid var(--line)}
+    .mini:last-child{border-right:0}
+    .miniicon{width:34px;height:34px;border-radius:999px;background:#edf4ff;color:var(--blue);display:grid;place-items:center;flex:0 0 auto}
+    .mini b{display:block;font-size:13px;color:#27407a}
+    .mini .meta{font-size:10px;text-transform:uppercase;color:var(--body);margin-top:2px}
+    .shell{max-width:var(--maxw);margin:auto;display:grid;grid-template-columns:255px 1fr;gap:18px;padding:18px 28px 38px}
+    .side{background:linear-gradient(180deg,#243d66,#1a2e4f);color:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px;min-height:calc(100vh - 138px);position:sticky;top:12px}
+    .ssearch{height:40px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.72);padding:0 11px;margin-bottom:14px}
+    .navblock{border-top:1px solid rgba(255,255,255,.08);padding-top:12px}
+    .navhead{height:42px;border-radius:12px;background:#3a5583;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-weight:700}
+    .subnav{padding:10px 0 0 8px;border-left:1px solid rgba(255,255,255,.14);margin:8px 0 0 10px}
+    .subitem{height:34px;display:flex;align-items:center;padding:0 12px;border-radius:10px;color:rgba(255,255,255,.76);font-size:13px}
+    .subitem.on{background:rgba(255,255,255,.12);color:#fff;font-weight:700}
     .main{min-width:0}
-    .subrow2{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .subrow2{display:flex;align-items:center;gap:10px;margin-bottom:18px}
     .sidetoggle,.rowact{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--body);display:grid;place-items:center}
     .ico{width:38px;height:38px;background:#e9f1fe;color:var(--blue);border-radius:10px;display:grid;place-items:center}
-    .lab b{font-size:18px}
-    .lab small{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;color:var(--mut);margin-top:2px}
-    .toolbar{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin-bottom:16px}
-    .seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px}
-    .seg button{border:0;background:transparent;color:var(--body);border-radius:8px;padding:8px 12px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;white-space:nowrap}
-    .seg button.on{background:var(--blue);color:#fff}
-    .primary{border:0;background:var(--blue);color:#fff;border-radius:10px;padding:0 14px;font-weight:700;display:flex;align-items:center;gap:8px;min-height:38px}
-    .sec{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;text-transform:uppercase;color:var(--mut);letter-spacing:2px;margin:18px 0 10px;display:flex;justify-content:space-between;align-items:center}
-    .ct{letter-spacing:0;color:var(--mut-2)}
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--line);box-shadow:var(--shadow);margin-bottom:16px}
-    .kpi{background:#fff;padding:16px}
-    .kl{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--mut);letter-spacing:1px}
-    .kv{font-size:24px;font-weight:700;margin-top:8px}
-    .kd{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--body);text-transform:uppercase;margin-top:3px}
-    .grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);gap:16px}
-    .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+    .lab b{display:block;font-size:18px;color:#1a3770}
+    .lab small{display:block;font-size:10px;text-transform:uppercase;color:var(--mut);margin-top:3px;font-family:"IBM Plex Mono",monospace}
+    .monthbar{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-bottom:16px}
+    .search,.selectbox{height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;display:flex;align-items:center;gap:9px;padding:0 12px;box-shadow:var(--shadow)}
+    .search input,.selectbox input,.selectbox select{border:0;background:transparent;width:100%;outline:0;color:var(--ink)}
+    .ghost,.primary,.danger{min-height:42px;border-radius:12px;padding:0 14px;font-weight:700;border:0;display:flex;align-items:center;gap:8px;justify-content:center}
+    .primary{background:var(--blue);color:#fff}
+    .ghost{background:#fff;color:var(--body);border:1px solid var(--line)}
+    .danger{background:#fff5f5;color:var(--red);border:1px solid rgba(210,59,59,.16)}
+    .hero h1{margin:0;font-size:18px;color:#183975}
+    .hero p{margin:4px 0 0;color:#617087}
+    .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:14px 0 16px}
+    .kpi,.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+    .kpi{padding:14px}
+    .ktop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .kicon{width:38px;height:38px;border-radius:999px;display:grid;place-items:center}
+    .kicon.blue{background:#edf4ff;color:var(--blue)}
+    .kicon.green{background:rgba(31,157,87,.10);color:var(--green)}
+    .kicon.slate{background:#f1f5f9;color:#64748b}
+    .klabel{font-size:12px;font-weight:700;color:#345081}
+    .kvalue{font-size:17px;font-weight:700}
+    .kmeta{font-size:12px;color:var(--body)}
+    .toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:16px}
+    .seg{display:flex;gap:8px;flex-wrap:wrap}
+    .seg button{height:38px;border:1px solid var(--line);background:#fff;color:var(--body);border-radius:10px;padding:0 14px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase}
+    .seg button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+    .dashgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:14px;margin-bottom:16px}
     .pad{padding:16px}
     .chead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .ti2{font-weight:700;font-size:16px}
-    .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--mut)}
-    .tablewrap{overflow:auto}
-    table{width:100%;border-collapse:separate;border-spacing:0;min-width:920px}
-    th{position:sticky;top:0;background:#f8fafc;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);text-align:left;padding:11px 12px;z-index:1}
-    td{border-bottom:1px solid var(--line-2);padding:11px 12px;vertical-align:middle;color:var(--body)}
+    .ti2{font-weight:700;font-size:16px;color:#1b3974}
+    .eyebrow{font-size:10px;text-transform:uppercase;color:var(--mut);letter-spacing:1.4px}
+    .bars{display:grid;gap:12px}
+    .baritem{display:grid;gap:6px}
+    .barlabel{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--body)}
+    .track{height:10px;border-radius:999px;background:#eef2f7;overflow:hidden}
+    .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#2f6df3,#1d56ce)}
+    .donut-wrap{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center}
+    .donut{width:150px;height:150px;border-radius:999px;display:grid;place-items:center;background:conic-gradient(var(--green) 0deg,var(--green) 0deg,#edf1f5 0deg 360deg);margin:auto}
+    .donut-hole{width:98px;height:98px;border-radius:999px;background:#fff;display:grid;place-items:center;text-align:center}
+    .donut-hole b{font-size:26px;color:#213a63}
+    .legend{display:grid;gap:12px}
+    .leg{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--body)}
+    .dot{width:8px;height:8px;border-radius:999px;display:inline-block;margin-right:7px}
+    .list{display:grid;gap:10px}
+    .li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line-2)}
+    .li:last-child{border-bottom:0;padding-bottom:0}
+    .liday{font-size:24px;font-weight:700;color:#183975}
+    .lisub{font-size:12px;color:var(--body)}
+    .rateio{display:grid;gap:10px}
+    .rate-line{display:flex;justify-content:space-between;gap:10px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+    .rate-line:last-child{border-bottom:0}
+    .table-card{overflow:hidden}
+    table{width:100%;border-collapse:collapse;min-width:980px}
+    th{background:#f8fafc;border-bottom:1px solid var(--line);font:600 10px "IBM Plex Mono",monospace;color:var(--mut);text-transform:uppercase;text-align:left;padding:12px}
+    td{padding:12px;border-bottom:1px solid var(--line-2);color:var(--body)}
     tbody tr:hover{background:#fbfcff}
-    .company,.money{font-weight:700;color:var(--ink)}
-    .mono{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--body)}
-    .tag,.st{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;white-space:nowrap}
+    .company,.money,b.link{color:var(--ink);font-weight:700}
+    .tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font:600 10px "IBM Plex Mono",monospace;text-transform:uppercase}
     .ok{background:rgba(31,157,87,.10);color:#197a45}
     .warn{background:rgba(217,145,26,.12);color:#b8780f}
-    .crit{background:rgba(210,59,59,.09);color:#bf3a3a}
     .neutral{background:#eef0f3;color:#667085}
-    .checks{display:flex;gap:6px;align-items:center}
-    .tick{width:22px;height:22px;border-radius:7px;background:rgba(31,157,87,.10);color:#197a45;display:grid;place-items:center;font-weight:700}
-    .empty{background:#eef0f3;color:#98a1b0}
-    .baritem{margin-bottom:14px}
-    .barlabel{display:flex;justify-content:space-between;gap:12px;font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;color:var(--body);margin-bottom:7px}
-    .track{height:8px;border-radius:999px;background:#eef0f3;overflow:hidden}
-    .fill{height:100%;border-radius:999px;background:var(--blue);width:0;transition:width .45s ease}
-    .note{border:1px dashed var(--line);border-radius:12px;padding:13px;color:var(--body);background:#fbfcff}
-    .note b{display:block;color:var(--ink);margin-bottom:4px}
+    .bullet{width:7px;height:7px;border-radius:999px;background:currentColor}
+    .actioncell{text-align:right}
+    .detail-grid{display:grid;grid-template-columns:1fr 300px;gap:14px}
     .detail{display:grid;gap:10px}
-    .ditem{border-bottom:1px solid var(--line-2);padding-bottom:10px}
-    .ditem:last-child{border:0;padding-bottom:0}
-    .ditem span{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
-    .fab{position:fixed;right:24px;bottom:24px;width:52px;height:52px;border:0;border-radius:16px;background:var(--navy);color:#fff;display:grid;place-items:center;box-shadow:0 12px 24px rgba(22,36,60,.22)}
+    .ditem{padding-bottom:10px;border-bottom:1px solid var(--line-2)}
+    .ditem:last-child{border-bottom:0;padding-bottom:0}
+    .ditem span{display:block;font:500 10px "IBM Plex Mono",monospace;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+    .note{border:1px dashed var(--line);border-radius:12px;background:#fbfcff;padding:14px;color:var(--body)}
+    .empty-state{padding:22px;border:1px dashed var(--line);border-radius:12px;background:#fbfcff;text-align:center;color:var(--body)}
+    .empty-state b{display:block;color:var(--ink);margin-bottom:5px}
+    .table-foot{padding:12px 16px;color:var(--mut);font-size:10px;text-transform:uppercase}
     .modal{position:fixed;inset:0;background:rgba(22,36,60,.38);display:none;place-items:center;padding:20px;z-index:20}
     .modal.open{display:grid}
-    .dialog{width:min(620px,100%);background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(16,24,40,.18);padding:18px}
+    .dialog{width:min(700px,100%);background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(16,24,40,.18);padding:18px}
     .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    label{display:grid;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--mut)}
+    label{display:grid;gap:6px;font:600 10px "IBM Plex Mono",monospace;text-transform:uppercase;color:var(--mut)}
     input,select{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--ink);min-width:0}
-    .dialog footer{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
-    .ghost{border:1px solid var(--line);background:#fff;color:var(--body);border-radius:10px;padding:10px 14px;font-weight:700}
-    .side-closed{grid-template-columns:78px 1fr}
-    .side-closed .side{padding:12px 9px}
-    .side-closed .nl,.side-closed .grp,.side-closed .ssearch span,.side-closed .ssearch kbd{display:none}
-    .side-closed .nv{justify-content:center;padding:0}
-    @media (max-width:1180px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.status,.clock{display:none}}
-    @media (max-width:920px){.shell{grid-template-columns:1fr;padding:14px}.side{position:static;height:auto}.toolbar{grid-template-columns:1fr}.hinner,.trow{padding-left:14px;padding-right:14px}.user,.tscroll{display:none}}
-    @media (max-width:560px){.kpis{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.seg{overflow:auto}.titles .s{white-space:normal}.logo{display:none}}
-    @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    footer{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+    .fab{position:fixed;right:24px;bottom:24px;width:52px;height:52px;border:0;border-radius:16px;background:var(--navy);color:#fff;display:grid;place-items:center;box-shadow:0 12px 24px rgba(22,36,60,.22)}
+    .side-closed{grid-template-columns:86px 1fr}
+    .side-closed .side{padding:12px 10px}
+    .side-closed .ssearch span,.side-closed .navlabel,.side-closed .subnav{display:none}
+    .side-closed .navhead{justify-content:center}
+    .side-closed .navhead strong{display:none}
+    svg{width:18px;height:18px;stroke-width:1.8}
+    @media (max-width:1280px){.kpis{grid-template-columns:repeat(3,1fr)}.dashgrid{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}}
+    @media (max-width:980px){.shell{grid-template-columns:1fr;padding:14px}.side{position:static;min-height:0}.trow{grid-template-columns:1fr 1fr;padding:14px}.monthbar,.toolbar{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.hinner{padding:14px}.user,.clock{display:none}}
+    @media (max-width:640px){.trow{grid-template-columns:1fr}.mini{border-right:0;border-bottom:1px solid var(--line);padding-bottom:10px}.mini:last-child{border-bottom:0}.kpis{grid-template-columns:1fr}.dashgrid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.donut-wrap{grid-template-columns:1fr}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
   </style>
 </head>
 <body>
@@ -132,113 +155,191 @@
         <span class="hsep"></span>
         <div class="titles">
           <div class="t">Portal Administrativo</div>
-          <div class="s">Controle de telefonia e internet</div>
+          <div class="s">Controle mensal de internet</div>
         </div>
       </div>
       <div class="grow"></div>
-      <span class="status"><span class="live"></span>MONITORAMENTO ATIVO</span>
+      <span class="status"><span class="live"></span>Monitoramento ativo</span>
       <span class="clock" id="clock">00:00:00</span>
-      <button class="ic" title="Notificações" aria-label="Notificações" data-icon="bell"></button>
-      <button class="ic" title="Configurações" aria-label="Configurações" data-icon="settings"></button>
+      <button class="ic" title="Notificacoes" aria-label="Notificacoes" data-icon="bell"></button>
+      <button class="ic" title="Configuracoes" aria-label="Configuracoes" data-icon="settings"></button>
       <div class="user">
         <div class="av">AD</div>
-        <div><b>Administrativo</b><small>MSE · operação</small></div>
+        <div><b>Administrativo</b><small>Controle operacional</small></div>
       </div>
     </div>
   </header>
 
   <div class="ticker">
     <div class="trow">
-      <span class="greet">Boa tarde. Controle centralizado sem planilhas.</span>
-      <div class="tscroll">
-        <span class="ti ok">Contratos ativos monitorados</span>
-        <span class="ti">Vencimentos por dia do mês</span>
-        <span class="ti">Pedidos e aprovações rastreados</span>
-        <span class="ti">Senhas protegidas por máscara</span>
+      <div class="mini">
+        <div class="miniicon" data-icon="refresh"></div>
+        <div><b>Dados atualizados automaticamente</b><div class="meta" id="updatedAt">Ultima atualizacao agora</div></div>
+      </div>
+      <div class="mini">
+        <div class="miniicon" data-icon="activity"></div>
+        <div><b>Indicadores monitorados</b><div class="meta" id="miniIndicators">0 contratos ativos</div></div>
+      </div>
+      <div class="mini">
+        <div class="miniicon" data-icon="shield"></div>
+        <div><b>Protecao total do CAPEX</b><div class="meta">Controles e aprovacoes ativos</div></div>
+      </div>
+      <div class="mini">
+        <div class="miniicon" data-icon="settings2"></div>
+        <div><b>100% parametrizavel</b><div class="meta">Cadastre conforme sua operacao</div></div>
       </div>
     </div>
   </div>
 
   <div class="shell">
     <aside class="side">
-      <div class="ssearch" aria-label="Buscar aplicações"><span data-icon="search"></span><span>Buscar aplicações</span><kbd>Ctrl K</kbd></div>
-      <div class="grp">Acesso rápido</div>
-      <div class="nv on"><span class="ni" data-icon="wifi"></span><span class="nl">Controle de Internet</span></div>
-      <div class="nv"><span class="ni" data-icon="phone"></span><span class="nl">Telefonia</span></div>
-      <div class="nv"><span class="ni" data-icon="fileText"></span><span class="nl">Contratos</span></div>
-      <div class="nv"><span class="ni" data-icon="dollar"></span><span class="nl">Rateios</span></div>
-      <div class="grp">Gestão</div>
-      <div class="nv"><span class="ni" data-icon="checkCircle"></span><span class="nl">Aprovações</span></div>
-      <div class="nv"><span class="ni" data-icon="calendar"></span><span class="nl">Vencimentos</span></div>
-      <div class="nv"><span class="ni" data-icon="shield"></span><span class="nl">Acessos</span></div>
+      <div class="ssearch"><span data-icon="search"></span><span class="navlabel">Buscar modulos</span></div>
+      <div class="navblock">
+        <div class="navhead">
+          <span style="display:flex;align-items:center;gap:10px"><span data-icon="briefcase"></span><strong>Administrativo</strong></span>
+          <span data-icon="chevronDown"></span>
+        </div>
+        <div class="subnav">
+          <div class="subitem on">Controle de Internet</div>
+        </div>
+      </div>
     </aside>
 
     <main class="main">
       <div class="subrow2">
         <button class="sidetoggle" id="sideToggle" title="Recolher menu" aria-label="Recolher menu" data-icon="menu"></button>
         <span class="ico" data-icon="wifi"></span>
-        <span class="lab"><b>Controle de Internet</b><small>Base inicial convertida da planilha · julho 2026</small></span>
+        <span class="lab">
+          <b>Dashboard Executivo</b>
+          <small>Controle de Internet</small>
+        </span>
       </div>
 
-      <div class="toolbar">
-        <div class="search"><span data-icon="search"></span><input id="q" placeholder="Buscar por obra, empresa, contrato, contato ou pedido"></div>
-        <div class="seg" aria-label="Filtrar status">
-          <button class="on" data-filter="todos">Todos</button>
-          <button data-filter="ativo">Ativos</button>
-          <button data-filter="pendente">Pendências</button>
-        </div>
+      <div class="monthbar">
+        <div class="search"><span data-icon="search"></span><input id="q" placeholder="Buscar por empresa, obra, contrato ou contato..."></div>
+        <div class="selectbox"><span data-icon="calendar"></span><input id="monthPicker" type="month"></div>
+        <button class="danger" id="resetMonth"><span data-icon="trash"></span>Zerar mes</button>
         <button class="primary" id="addBtn"><span data-icon="plus"></span>Novo registro</button>
       </div>
 
-      <section class="kpis" aria-label="Indicadores do controle de internet">
-        <div class="kpi"><div class="kl">Contratos ativos</div><div class="kv" id="kActive">0</div><div class="kd">links em operação</div></div>
-        <div class="kpi"><div class="kl">Custo mensal</div><div class="kv" id="kCost">R$ 0,00</div><div class="kd">itens com valor informado</div></div>
-        <div class="kpi"><div class="kl">Aprovação</div><div class="kv" id="kApproval">0%</div><div class="kd">pedidos aprovados</div></div>
-        <div class="kpi"><div class="kl">Próximo vencimento</div><div class="kv" id="kNext">-</div><div class="kd">dia do mês</div></div>
+      <div class="hero">
+        <h1 id="pageTitle">Dashboard Executivo</h1>
+        <p id="pageSubtitle">Controle mensal iniciado do zero para o mes selecionado.</p>
+      </div>
+
+      <section class="kpis">
+        <div class="kpi">
+          <div class="ktop"><div class="kicon blue" data-icon="fileText"></div><div class="klabel">Contratos ativos</div></div>
+          <div class="kvalue" id="kActive">0</div>
+          <div class="kmeta">Todos ativos</div>
+        </div>
+        <div class="kpi">
+          <div class="ktop"><div class="kicon green" data-icon="dollar"></div><div class="klabel">Valor mensal registrado</div></div>
+          <div class="kvalue" id="kCost">R$ 0,00</div>
+          <div class="kmeta">Total mensal</div>
+        </div>
+        <div class="kpi">
+          <div class="ktop"><div class="kicon blue" data-icon="building"></div><div class="klabel">Operadoras</div></div>
+          <div class="kvalue" id="kOperators">0</div>
+          <div class="kmeta">Empresas distintas</div>
+        </div>
+        <div class="kpi">
+          <div class="ktop"><div class="kicon blue" data-icon="calendar"></div><div class="klabel">Proximo vencimento</div></div>
+          <div class="kvalue" id="kNext">-</div>
+          <div class="kmeta">Sem agenda ainda</div>
+        </div>
+        <div class="kpi">
+          <div class="ktop"><div class="kicon blue" data-icon="clipboard"></div><div class="klabel">Pedidos vinculados</div></div>
+          <div class="kvalue" id="kOrders">0</div>
+          <div class="kmeta">Pedidos ativos</div>
+        </div>
+        <div class="kpi">
+          <div class="ktop"><div class="kicon green" data-icon="clock"></div><div class="klabel">Mes monitorado</div></div>
+          <div class="kvalue" id="kMonth">-</div>
+          <div class="kmeta">Mes de referencia</div>
+        </div>
       </section>
 
-      <div class="grid">
-        <section class="card">
-          <div class="pad">
-            <div class="chead">
-              <span class="ti2">Inventário de links</span>
-              <span class="lbl" id="countLabel">0 registros</span>
+      <div class="toolbar">
+        <div class="seg" aria-label="Filtros">
+          <button class="on" data-filter="todos">Todos</button>
+          <button data-filter="ativos">Ativos</button>
+          <button data-filter="vencendo">Vencendo</button>
+          <button data-filter="sem-pedido">Sem pedido</button>
+        </div>
+        <div class="eyebrow" id="countLabel">0 registros no mes</div>
+      </div>
+
+      <section class="dashgrid">
+        <article class="card pad">
+          <div class="chead"><span class="ti2">Valor por obra</span><span class="eyebrow">Distribuicao</span></div>
+          <div class="bars" id="bars"></div>
+        </article>
+
+        <article class="card pad">
+          <div class="chead"><span class="ti2">Status dos contratos</span><span class="eyebrow">Visao geral</span></div>
+          <div class="donut-wrap">
+            <div class="donut" id="donut">
+              <div class="donut-hole"><div><b id="donutPct">0%</b><div class="eyebrow">Ativos</div></div></div>
             </div>
+            <div class="legend" id="legend"></div>
           </div>
-          <div class="tablewrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Obra</th>
-                  <th>Empresa</th>
-                  <th>Venc.</th>
-                  <th>Contrato</th>
-                  <th>Contato</th>
-                  <th>Valor</th>
-                  <th>Pedido</th>
-                  <th>Fluxo</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="rows"></tbody>
-            </table>
+        </article>
+
+        <article class="card pad">
+          <div class="chead"><span class="ti2">Proximos vencimentos</span><span class="eyebrow">Agenda</span></div>
+          <div class="list" id="upcoming"></div>
+        </article>
+
+        <article class="card pad">
+          <div class="chead"><span class="ti2">Rateio do mes</span><span class="eyebrow" id="rateioTitle">Mes atual</span></div>
+          <div class="rateio" id="rateio"></div>
+        </article>
+      </section>
+
+      <section class="card table-card">
+        <div class="pad">
+          <div class="chead"><span class="ti2">Contratos ativos</span><span class="eyebrow">Cadastro mensal</span></div>
+        </div>
+        <div style="overflow:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Obra</th>
+                <th>Empresa</th>
+                <th>Vencimento</th>
+                <th>No do contrato</th>
+                <th>Contato</th>
+                <th>Valor (R$)</th>
+                <th>Pedido</th>
+                <th>Aprovado</th>
+                <th>S1</th>
+                <th>Acoes</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="table-foot">Linhas do mes selecionado: <span id="footCount">0</span></div>
+      </section>
+
+      <div class="detail-grid" style="margin-top:16px">
+        <section class="card pad">
+          <div class="chead"><span class="ti2" id="detailTitle">Registro selecionado</span><span class="tag neutral" id="detailStatus">Aguardando</span></div>
+          <div class="detail" id="detail">
+            <div class="empty-state">
+              <b>Nenhum registro selecionado.</b>
+              Clique no icone de visualizacao da tabela para abrir os detalhes do contrato do mes.
+            </div>
           </div>
         </section>
-
-        <aside class="detailcol">
-          <section class="card pad">
-            <div class="chead"><span class="ti2">Resumo por obra</span><span class="lbl">Distribuição</span></div>
-            <div id="bars"></div>
-          </section>
-
-          <div class="sec">Registro selecionado <span class="ct">detalhe</span></div>
-          <section class="card pad">
-            <div class="chead"><span class="ti2" id="detailTitle">Selecione um item</span><span class="tag neutral" id="detailStatus">Aguardando</span></div>
-            <div class="detail" id="detail">
-              <div class="note"><b>Nenhum registro aberto.</b>Use o botão de olho na tabela para visualizar dados de contrato, contato e observações.</div>
-            </div>
-          </section>
+        <aside class="card pad">
+          <div class="chead"><span class="ti2">Controle do mes</span><span class="eyebrow">Cadastro</span></div>
+          <div class="note">
+            <b style="display:block;color:var(--ink);margin-bottom:6px">Como funciona</b>
+            Cada mes comeca zerado. Selecione o mes de referencia, cadastre os contratos e use o botao de zerar apenas para limpar o mes atual e recomecar.
+          </div>
         </aside>
       </div>
     </main>
@@ -254,16 +355,34 @@
       </div>
       <form id="form">
         <div class="formgrid">
-          <label>Status<select name="status"><option>Ativo</option><option>Pendente</option></select></label>
+          <label>Status
+            <select name="status">
+              <option>Ativo</option>
+              <option>Inativo</option>
+              <option>Cancelado</option>
+            </select>
+          </label>
           <label>Obra<input name="obra" required placeholder="Ex.: Sede"></label>
           <label>Empresa<input name="empresa" required placeholder="Ex.: Vivo"></label>
-          <label>Vencimento<input name="vencimento" placeholder="Dia do mês"></label>
-          <label>Número do contrato<input name="contrato" placeholder="Ex.: 285704686"></label>
+          <label>Vencimento<input name="vencimento" type="number" min="1" max="31" placeholder="Dia do mes"></label>
+          <label>Numero do contrato<input name="contrato" placeholder="Ex.: 285704686"></label>
           <label>Valor<input name="valor" placeholder="Ex.: 1339,94"></label>
           <label>Pedido<input name="pedido" placeholder="Ex.: 114735"></label>
-          <label>Contato<input name="contato" placeholder="Telefone, WhatsApp ou responsável"></label>
+          <label>Contato<input name="contato" placeholder="Telefone, WhatsApp ou responsavel"></label>
+          <label>Aprovado
+            <select name="aprovado">
+              <option value="sim">Sim</option>
+              <option value="nao">Nao</option>
+            </select>
+          </label>
+          <label>S1
+            <select name="s1">
+              <option value="sim">Sim</option>
+              <option value="nao">Nao</option>
+            </select>
+          </label>
         </div>
-        <label style="margin-top:12px">Observação<input name="obs" placeholder="Informação interna sem senha em aberto"></label>
+        <label style="margin-top:12px">Observacao<input name="obs" placeholder="Informacao interna do contrato"></label>
         <footer>
           <button type="button" class="ghost" id="cancel">Cancelar</button>
           <button type="submit" class="primary"><span data-icon="save"></span>Salvar registro</button>
@@ -273,125 +392,328 @@
   </div>
 
   <script>
-    const ICONS={
+    const ICONS = {
       bell:'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
       settings:'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.5-2.4 1a7.5 7.5 0 0 0-1.7-1L15 3H9l-.3 2.6a7.5 7.5 0 0 0-1.7 1l-2.4-1-2 3.5L2.6 11a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7.5 7.5 0 0 0 1.7 1L9 21h6l.3-2.6a7.5 7.5 0 0 0 1.7-1l2.4 1 2-3.5z',
+      refresh:'M21 12a9 9 0 1 1-6.2-8.5M21 4v5h-5',
+      activity:'M3 12h4l3 8 4-16 3 8h4',
+      shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z',
+      settings2:'M4 7h8M4 17h16M14 7h6M4 12h16M18 12v0M10 17v0',
       search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3',
+      briefcase:'M2 7h20v14H2zM16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2',
+      chevronDown:'m6 9 6 6 6-6',
+      menu:'M3 6h18M3 12h18M3 18h18',
       wifi:'M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0M12 20h.01M2 9a15 15 0 0 1 20 0',
-      phone:'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.2a2 2 0 0 1 2.1-.5c.8.4 1.7.6 2.6.7a2 2 0 0 1 1.7 2z',
+      calendar:'M3 4h18v17H3zM16 2v4M8 2v4M3 10h18',
+      trash:'M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6M10 11v6M14 11v6',
+      plus:'M12 5v14M5 12h14',
       fileText:'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h6',
       dollar:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 7v10M14.5 9.3A2.4 2 0 0 0 12 8c-1.4 0-2.5.8-2.5 2s1.1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2a2.4 2 0 0 1-2.5-1.3',
-      checkCircle:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M9 12l2 2 4-4',
-      calendar:'M3 4h18v17H3zM16 2v4M8 2v4M3 10h18',
-      shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z',
-      menu:'M3 6h18M3 12h18M3 18h18',
-      plus:'M12 5v14M5 12h14',
+      building:'M4 3h16v18H4zM8 7h2M8 11h2M8 15h2M14 7h2M14 11h2M14 15h2',
+      clipboard:'M8 2h8v4H8zM16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2',
+      clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 7v5l3 2',
       eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',
       close:'M18 6 6 18M6 6l12 12',
       save:'M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8',
       chat:'M21 12a8 8 0 0 1-11 7.3L3 21l1.7-7A8 8 0 1 1 21 12Z'
     };
-    function icon(name,size=18){return `<svg width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="${ICONS[name]||''}"/></svg>`}
-    document.querySelectorAll('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));
-    function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('pt-BR')}
-    setInterval(tick,1000);tick();
-    document.getElementById('sideToggle').addEventListener('click',()=>document.querySelector('.shell').classList.toggle('side-closed'));
 
-    let filter='todos';
-    let selectedId=null;
-    const data=[
-      {id:1,status:'Ativo',obra:'Sede',empresa:'VIVO',vencimento:13,contrato:'285704686',contato:'Login CPF cadastrado',valor:1339.94,pedido:'114735',aprovado:true,s1:true,obs:'Senha protegida no cofre interno.'},
-      {id:2,status:'Ativo',obra:'ADM',empresa:'Sercomtel MSE - Débito em conta',vencimento:15,contrato:'085.821-3',contato:'Login telefone cadastrado',valor:1510.03,pedido:'114704',aprovado:true,s1:true,obs:'Cobrança por débito em conta.'},
-      {id:3,status:'Ativo',obra:'Celular Rafael',empresa:'CLARO (ban life)',vencimento:17,contrato:'147220649',contato:'Celular corporativo',valor:110.98,pedido:'114705',aprovado:true,s1:true,obs:'Plano móvel vinculado ao responsável.'},
-      {id:4,status:'Ativo',obra:'LDTEC',empresa:'NetDigital Telecomunicações (sede)',vencimento:16,contrato:'-',contato:'WhatsApp: 43 9855-1113',valor:1357.99,pedido:'114706',aprovado:false,s1:true,obs:'Link sede. Contrato não informado na planilha.'},
-      {id:5,status:'Ativo',obra:'LDTEC',empresa:'NetDigital Telecomunicações (sede)',vencimento:16,contrato:'-',contato:'WhatsApp: 43 9855-1113',valor:null,pedido:'-',aprovado:false,s1:false,obs:'Registro duplicado para conferência de serviço/linha.'},
-      {id:6,status:'Ativo',obra:'LDTEC',empresa:'NetDigital Telecomunicações (sede)',vencimento:16,contrato:'-',contato:'WhatsApp: 43 9855-1113',valor:null,pedido:'-',aprovado:false,s1:false,obs:'Início indicado como 10/2025 na planilha original.'},
-      {id:7,status:'Ativo',obra:'Porto',empresa:'ITAPOA FIBRA TELECOMUNICAÇÃO LTDA',vencimento:20,contrato:'-',contato:'Contato não informado',valor:199.80,pedido:'4664',aprovado:true,s1:true,obs:'Registro ativo no controle mensal.'}
-    ];
-    const brl=v=>v==null?'-':v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-    const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    function filtered(){
-      const q=norm(document.getElementById('q').value);
-      return data.filter(r=>{
-        const text=norm([r.status,r.obra,r.empresa,r.contrato,r.contato,r.pedido,r.obs].join(' '));
-        const byQ=!q||text.includes(q);
-        const byF=filter==='todos'||(filter==='ativo'&&r.status==='Ativo')||(filter==='pendente'&&(!r.aprovado||!r.s1||!r.valor));
-        return byQ&&byF;
+    function icon(name, size = 18) {
+      return `<svg width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="${ICONS[name] || ''}"/></svg>`;
+    }
+
+    document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = icon(el.dataset.icon));
+
+    function tick() {
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
+      document.getElementById('updatedAt').textContent = `Ultima atualizacao: ${new Date().toLocaleTimeString('pt-BR')}`;
+    }
+    setInterval(tick, 1000);
+    tick();
+
+    document.getElementById('sideToggle').addEventListener('click', () => {
+      document.querySelector('.shell').classList.toggle('side-closed');
+    });
+
+    let filter = 'todos';
+    let selectedId = null;
+    const monthPicker = document.getElementById('monthPicker');
+    const dataByMonth = {};
+
+    function defaultMonth() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      return `${yyyy}-${mm}`;
+    }
+
+    monthPicker.value = defaultMonth();
+
+    function ensureMonth(monthKey) {
+      if (!dataByMonth[monthKey]) dataByMonth[monthKey] = [];
+      return dataByMonth[monthKey];
+    }
+
+    function currentMonthKey() {
+      return monthPicker.value || defaultMonth();
+    }
+
+    function currentData() {
+      return ensureMonth(currentMonthKey());
+    }
+
+    function monthLabel(monthKey) {
+      if (!monthKey) return '-';
+      const [year, month] = monthKey.split('-');
+      return new Date(Number(year), Number(month) - 1, 1).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).replace('.', '');
+    }
+
+    function brl(value) {
+      return value == null ? 'R$ 0,00' : value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function norm(value) {
+      return (value || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    function filteredRows() {
+      const rows = currentData();
+      const q = norm(document.getElementById('q').value);
+      return rows.filter(row => {
+        const hay = norm([row.status, row.obra, row.empresa, row.contrato, row.contato, row.pedido, row.obs].join(' '));
+        const queryOk = !q || hay.includes(q);
+        const filterOk =
+          filter === 'todos' ||
+          (filter === 'ativos' && row.status === 'Ativo') ||
+          (filter === 'vencendo' && Number(row.vencimento || 99) <= 20) ||
+          (filter === 'sem-pedido' && (!row.pedido || row.pedido === '-'));
+        return queryOk && filterOk;
       });
     }
-    function render(){
-      const rows=filtered();
-      document.getElementById('countLabel').textContent=`${rows.length} registros`;
-      document.getElementById('rows').innerHTML=rows.map(r=>`
-        <tr>
-          <td><span class="tag ${r.status==='Ativo'?'ok':'warn'}">${r.status}</span></td>
-          <td><b>${r.obra}</b></td>
-          <td><span class="company">${r.empresa}</span></td>
-          <td><span class="mono">${r.vencimento||'-'}</span></td>
-          <td><span class="mono">${r.contrato}</span></td>
-          <td>${r.contato}</td>
-          <td><span class="money">${brl(r.valor)}</span></td>
-          <td><span class="mono">${r.pedido}</span></td>
-          <td><div class="checks"><span class="tick ${r.aprovado?'':'empty'}">${r.aprovado?'✓':'-'}</span><span class="tick ${r.s1?'':'empty'}">${r.s1?'S1':'-'}</span></div></td>
-          <td><button class="rowact" title="Ver detalhe" aria-label="Ver detalhe" onclick="selectRow(${r.id})">${icon('eye')}</button></td>
-        </tr>`).join('');
-      renderKpis();
-      renderBars(rows);
-      if(selectedId && rows.some(r=>r.id===selectedId)) selectRow(selectedId, false);
+
+    function kpiData(rows) {
+      const active = rows.filter(row => row.status === 'Ativo').length;
+      const totalValue = rows.reduce((sum, row) => sum + (row.valor || 0), 0);
+      const operators = new Set(rows.map(row => row.empresa).filter(Boolean)).size;
+      const nextDueValues = rows.map(row => Number(row.vencimento)).filter(v => Number.isFinite(v) && v > 0);
+      const nextDue = nextDueValues.length ? Math.min(...nextDueValues) : null;
+      const orders = rows.filter(row => row.pedido && row.pedido !== '-').length;
+      return { active, totalValue, operators, nextDue, orders };
     }
-    function renderKpis(){
-      const active=data.filter(r=>r.status==='Ativo');
-      const valued=data.filter(r=>r.valor!=null);
-      const approved=data.filter(r=>r.aprovado).length;
-      const next=Math.min(...data.filter(r=>r.vencimento).map(r=>Number(r.vencimento)));
-      document.getElementById('kActive').textContent=active.length;
-      document.getElementById('kCost').textContent=brl(valued.reduce((a,r)=>a+r.valor,0));
-      document.getElementById('kApproval').textContent=Math.round(approved/data.length*100)+'%';
-      document.getElementById('kNext').textContent=Number.isFinite(next)?next:'-';
+
+    function renderKpis(rows) {
+      const info = kpiData(rows);
+      document.getElementById('kActive').textContent = info.active;
+      document.getElementById('kCost').textContent = brl(info.totalValue);
+      document.getElementById('kOperators').textContent = info.operators;
+      document.getElementById('kNext').textContent = info.nextDue || '-';
+      document.getElementById('kOrders').textContent = info.orders;
+      document.getElementById('kMonth').textContent = monthLabel(currentMonthKey());
+      document.getElementById('miniIndicators').textContent = `${info.active} contratos ativos`;
+      document.getElementById('pageSubtitle').textContent = `Mes de referencia: ${monthLabel(currentMonthKey())}. Cadastre tudo que voce precisa para este fechamento.`;
     }
-    function renderBars(rows){
-      const counts=rows.reduce((acc,r)=>{acc[r.obra]=(acc[r.obra]||0)+1;return acc},{});
-      const max=Math.max(1,...Object.values(counts));
-      document.getElementById('bars').innerHTML=Object.entries(counts).map(([obra,total])=>`
+
+    function renderBars(rows) {
+      const grouped = {};
+      rows.forEach(row => {
+        const key = row.obra || 'Sem obra';
+        grouped[key] = (grouped[key] || 0) + (row.valor || 0);
+      });
+      const entries = Object.entries(grouped).sort((a, b) => b[1] - a[1]);
+      const max = entries.length ? entries[0][1] : 0;
+      const container = document.getElementById('bars');
+      if (!entries.length) {
+        container.innerHTML = `<div class="empty-state"><b>Sem valores registrados.</b>Adicione contratos no mes para visualizar a distribuicao por obra.</div>`;
+        return;
+      }
+      container.innerHTML = entries.map(([obra, total]) => `
         <div class="baritem">
-          <div class="barlabel"><span>${obra}</span><b>${total} registro${total>1?'s':''}</b></div>
-          <div class="track"><div class="fill" style="width:${total/max*100}%"></div></div>
-        </div>`).join('')||'<div class="note"><b>Sem dados.</b>Ajuste os filtros para visualizar a distribuição.</div>';
+          <div class="barlabel"><span>${obra}</span><b>${brl(total)}</b></div>
+          <div class="track"><div class="fill" style="width:${max ? total / max * 100 : 0}%"></div></div>
+        </div>
+      `).join('');
     }
-    function selectRow(id,scroll=true){
-      selectedId=id;
-      const r=data.find(x=>x.id===id);
-      document.getElementById('detailTitle').textContent=r.obra;
-      document.getElementById('detailStatus').textContent=r.status;
-      document.getElementById('detailStatus').className='tag '+(r.status==='Ativo'?'ok':'warn');
-      document.getElementById('detail').innerHTML=`
-        <div class="ditem"><span>Empresa</span><b>${r.empresa}</b></div>
-        <div class="ditem"><span>Contrato</span>${r.contrato}</div>
-        <div class="ditem"><span>Contato</span>${r.contato}</div>
-        <div class="ditem"><span>Valor mensal</span><b>${brl(r.valor)}</b></div>
-        <div class="ditem"><span>Pedido</span>${r.pedido}</div>
-        <div class="ditem"><span>Fluxo</span>Aprovado: ${r.aprovado?'sim':'não'} · S1: ${r.s1?'sim':'não'}</div>
-        <div class="note"><b>Observação</b>${r.obs}</div>`;
-      if(scroll && window.innerWidth<1180) document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});
+
+    function renderStatus(rows) {
+      const total = rows.length;
+      const active = rows.filter(row => row.status === 'Ativo').length;
+      const inactive = rows.filter(row => row.status === 'Inativo').length;
+      const canceled = rows.filter(row => row.status === 'Cancelado').length;
+      const pct = total ? Math.round(active / total * 100) : 0;
+      document.getElementById('donut').style.background = `conic-gradient(var(--green) 0deg ${pct * 3.6}deg,#edf1f5 ${pct * 3.6}deg 360deg)`;
+      document.getElementById('donutPct').textContent = `${pct}%`;
+      document.getElementById('legend').innerHTML = `
+        <div class="leg"><span><span class="dot" style="background:var(--green)"></span>Ativos</span><b>${active}</b></div>
+        <div class="leg"><span><span class="dot" style="background:var(--amber)"></span>Inativos</span><b>${inactive}</b></div>
+        <div class="leg"><span><span class="dot" style="background:var(--slate)"></span>Cancelados</span><b>${canceled}</b></div>
+      `;
     }
-    window.selectRow=selectRow;
-    document.getElementById('q').addEventListener('input',render);
-    document.querySelectorAll('.seg button').forEach(btn=>btn.addEventListener('click',()=>{
-      document.querySelectorAll('.seg button').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on'); filter=btn.dataset.filter; render();
-    }));
-    const modal=document.getElementById('modal');
-    function closeModal(){modal.classList.remove('open')}
-    document.getElementById('addBtn').addEventListener('click',()=>modal.classList.add('open'));
-    document.getElementById('closeModal').addEventListener('click',closeModal);
-    document.getElementById('cancel').addEventListener('click',closeModal);
-    document.getElementById('form').addEventListener('submit',e=>{
-      e.preventDefault();
-      const f=Object.fromEntries(new FormData(e.currentTarget).entries());
-      const value=f.valor?Number(f.valor.replace(/\./g,'').replace(',','.')):null;
-      data.push({id:Date.now(),status:f.status,obra:f.obra,empresa:f.empresa,vencimento:f.vencimento,contrato:f.contrato||'-',contato:f.contato||'Contato não informado',valor:Number.isFinite(value)?value:null,pedido:f.pedido||'-',aprovado:false,s1:false,obs:f.obs||'Registro criado no portal.'});
-      e.currentTarget.reset(); closeModal(); render();
+
+    function renderUpcoming(rows) {
+      const container = document.getElementById('upcoming');
+      const items = rows
+        .filter(row => Number(row.vencimento))
+        .sort((a, b) => Number(a.vencimento) - Number(b.vencimento))
+        .slice(0, 4);
+      if (!items.length) {
+        container.innerHTML = `<div class="empty-state"><b>Sem vencimentos cadastrados.</b>Preencha o dia de vencimento para montar a agenda do mes.</div>`;
+        return;
+      }
+      container.innerHTML = items.map(item => `
+        <div class="li">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="liday">${item.vencimento}</div>
+            <div><b class="link">${item.obra || 'Sem obra'}</b><div class="lisub">${item.empresa || 'Empresa nao informada'}</div></div>
+          </div>
+          <div class="lisub">1 contrato</div>
+        </div>
+      `).join('');
+    }
+
+    function renderRateio(rows) {
+      const grouped = {};
+      rows.forEach(row => {
+        const obra = row.obra || 'Sem obra';
+        grouped[obra] = (grouped[obra] || 0) + (row.valor || 0);
+      });
+      const total = rows.reduce((sum, row) => sum + (row.valor || 0), 0);
+      document.getElementById('rateioTitle').textContent = monthLabel(currentMonthKey());
+      const container = document.getElementById('rateio');
+      const entries = Object.entries(grouped);
+      if (!entries.length || !total) {
+        container.innerHTML = `<div class="empty-state"><b>Rateio aguardando cadastro.</b>Assim que os valores do mes forem preenchidos, o fechamento aparece aqui.</div>`;
+        return;
+      }
+      container.innerHTML = entries.map(([obra, value]) => `
+        <div class="rate-line">
+          <span>${obra}</span>
+          <b>${Math.round(value / total * 100)}%</b>
+        </div>
+      `).join('') + `<div class="rate-line"><span><b>Fechamento</b></span><b style="color:var(--green)">100%</b></div>`;
+    }
+
+    function renderTable(rows) {
+      const body = document.getElementById('rows');
+      if (!rows.length) {
+        body.innerHTML = `<tr><td colspan="11"><div class="empty-state"><b>Mes sem informacoes cadastradas.</b>Selecione o mes e use "Novo registro" para comecar do zero.</div></td></tr>`;
+        return;
+      }
+      body.innerHTML = rows.map(row => `
+        <tr>
+          <td><span class="tag ${row.status === 'Ativo' ? 'ok' : row.status === 'Inativo' ? 'warn' : 'neutral'}"><span class="bullet"></span>${row.status}</span></td>
+          <td><b class="link">${row.obra || '-'}</b></td>
+          <td><span class="company">${row.empresa || '-'}</span></td>
+          <td><b style="color:#2d8b57">${row.vencimento || '-'}</b></td>
+          <td>${row.contrato || '-'}</td>
+          <td>${row.contato || '-'}</td>
+          <td><span class="money">${row.valor != null ? brl(row.valor) : '-'}</span></td>
+          <td>${row.pedido || '-'}</td>
+          <td>${row.aprovado ? 'Sim' : 'Nao'}</td>
+          <td>${row.s1 ? 'Sim' : 'Nao'}</td>
+          <td class="actioncell"><button class="rowact" title="Ver detalhe" aria-label="Ver detalhe" onclick="selectRow(${row.id})">${icon('eye')}</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderDetails(row) {
+      const detail = document.getElementById('detail');
+      if (!row) {
+        document.getElementById('detailTitle').textContent = 'Registro selecionado';
+        document.getElementById('detailStatus').textContent = 'Aguardando';
+        document.getElementById('detailStatus').className = 'tag neutral';
+        detail.innerHTML = `<div class="empty-state"><b>Nenhum registro selecionado.</b>Clique no icone de visualizacao da tabela para abrir os detalhes do contrato do mes.</div>`;
+        return;
+      }
+      document.getElementById('detailTitle').textContent = row.obra || 'Registro';
+      document.getElementById('detailStatus').textContent = row.status;
+      document.getElementById('detailStatus').className = `tag ${row.status === 'Ativo' ? 'ok' : row.status === 'Inativo' ? 'warn' : 'neutral'}`;
+      detail.innerHTML = `
+        <div class="ditem"><span>Empresa</span><b>${row.empresa || '-'}</b></div>
+        <div class="ditem"><span>Contrato</span>${row.contrato || '-'}</div>
+        <div class="ditem"><span>Contato</span>${row.contato || '-'}</div>
+        <div class="ditem"><span>Valor mensal</span><b>${row.valor != null ? brl(row.valor) : '-'}</b></div>
+        <div class="ditem"><span>Pedido</span>${row.pedido || '-'}</div>
+        <div class="ditem"><span>Fluxo</span>Aprovado: ${row.aprovado ? 'sim' : 'nao'} | S1: ${row.s1 ? 'sim' : 'nao'}</div>
+        <div class="note"><b style="display:block;color:var(--ink);margin-bottom:6px">Observacao</b>${row.obs || 'Sem observacao cadastrada.'}</div>
+      `;
+    }
+
+    function selectRow(id) {
+      selectedId = id;
+      const row = currentData().find(item => item.id === id);
+      renderDetails(row || null);
+    }
+    window.selectRow = selectRow;
+
+    function render() {
+      ensureMonth(currentMonthKey());
+      const rows = filteredRows();
+      const allRows = currentData();
+      document.getElementById('pageTitle').textContent = `Dashboard Executivo | ${monthLabel(currentMonthKey())}`;
+      document.getElementById('countLabel').textContent = `${allRows.length} registros no mes`;
+      document.getElementById('footCount').textContent = allRows.length;
+      renderKpis(allRows);
+      renderBars(allRows);
+      renderStatus(allRows);
+      renderUpcoming(allRows);
+      renderRateio(allRows);
+      renderTable(rows);
+      const selected = allRows.find(item => item.id === selectedId);
+      renderDetails(selected || null);
+    }
+
+    document.getElementById('q').addEventListener('input', render);
+    monthPicker.addEventListener('change', () => {
+      selectedId = null;
+      render();
     });
+
+    document.querySelectorAll('.seg button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.seg button').forEach(item => item.classList.remove('on'));
+        button.classList.add('on');
+        filter = button.dataset.filter;
+        render();
+      });
+    });
+
+    const modal = document.getElementById('modal');
+    function closeModal() { modal.classList.remove('open'); }
+    document.getElementById('addBtn').addEventListener('click', () => modal.classList.add('open'));
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancel').addEventListener('click', closeModal);
+
+    document.getElementById('resetMonth').addEventListener('click', () => {
+      const label = monthLabel(currentMonthKey());
+      if (!window.confirm(`Deseja zerar todos os registros do mes ${label}?`)) return;
+      dataByMonth[currentMonthKey()] = [];
+      selectedId = null;
+      render();
+    });
+
+    document.getElementById('form').addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = Object.fromEntries(new FormData(event.currentTarget).entries());
+      const numericValue = formData.valor ? Number(formData.valor.replace(/\./g, '').replace(',', '.')) : null;
+      currentData().push({
+        id: Date.now(),
+        status: formData.status,
+        obra: formData.obra,
+        empresa: formData.empresa,
+        vencimento: formData.vencimento || '',
+        contrato: formData.contrato || '-',
+        contato: formData.contato || '-',
+        valor: Number.isFinite(numericValue) ? numericValue : null,
+        pedido: formData.pedido || '-',
+        aprovado: formData.aprovado === 'sim',
+        s1: formData.s1 === 'sim',
+        obs: formData.obs || ''
+      });
+      event.currentTarget.reset();
+      closeModal();
+      render();
+    });
+
     render();
   </script>
 </body>

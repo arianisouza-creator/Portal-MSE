@@ -46,7 +46,7 @@ def main() -> None:
         st.error(str(exc))
         st.stop()
 
-    components.html(html, height=1700, scrolling=True)
+    components.html(html, height=2200, scrolling=True)
 
 
 if __name__ == "__main__":
