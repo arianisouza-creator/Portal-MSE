@@ -675,7 +675,7 @@
             <p id="pPageSubtitle">Sincronize a API do portal MSE e complemente apenas os dados que nao vierem automaticamente.</p>
           </div>
 
-          <section class="kpis" style="grid-template-columns:repeat(6,1fr)">
+          <section class="kpis" style="grid-template-columns:repeat(5,1fr)">
             <div class="kpi">
               <div class="ktop"><div class="kicon blue" data-icon="fileText"></div><div class="klabel">Solicitacoes</div></div>
               <div class="kvalue" id="pTotal">0</div>
@@ -701,25 +701,20 @@
               <div class="kvalue" id="pSavings">R$ 0,00</div>
               <div class="kmeta">Aprovado maior que pago</div>
             </div>
-            <div class="kpi">
-              <div class="ktop"><div class="kicon slate" data-icon="clipboard"></div><div class="klabel">Pendentes</div></div>
-              <div class="kvalue" id="pPending">0</div>
-              <div class="kmeta">Sem complemento interno</div>
-            </div>
           </section>
 
-          <section class="dashgrid">
+          <section class="dashgrid" style="grid-template-columns:1.05fr 1.05fr .9fr">
             <article class="card pad">
-              <div class="chead"><span class="ti2">Distribuicao por obra</span><span class="eyebrow" id="pSyncStamp">Aguardando sincronizacao</span></div>
+              <div class="chead"><span class="ti2">Gasto por obra</span><span class="eyebrow" id="pSyncStamp">Aguardando sincronizacao</span></div>
               <div class="bars" id="pBars"></div>
             </article>
             <article class="card pad">
-              <div class="chead"><span class="ti2">Tipos da solicitacao</span><span class="eyebrow">API Passagens</span></div>
-              <div class="list" id="pTypes"></div>
+              <div class="chead"><span class="ti2">Modal comparativo</span><span class="eyebrow">Quantidade e gasto</span></div>
+              <div class="bars" id="pModeBars"></div>
             </article>
             <article class="card pad">
-              <div class="chead"><span class="ti2">Conferencia interna</span><span class="eyebrow">Complemento manual</span></div>
-              <div class="list" id="pChecklist"></div>
+              <div class="chead"><span class="ti2">Economia por obra</span><span class="eyebrow">Somente quando economiza</span></div>
+              <div class="list" id="pSavingsList"></div>
             </article>
           </section>
 
@@ -755,6 +750,24 @@
             <h1>Aereo</h1>
             <p>Conferencie compras de passagens aereas, localizador, companhia e pedido interno.</p>
           </div>
+          <section class="card pad" style="margin-bottom:14px">
+            <div class="chead"><span class="ti2">Filtro por data da compra</span><span class="eyebrow">Periodo consultado</span></div>
+            <div class="mini-form" style="grid-template-columns:1fr 1fr auto">
+              <label>Data inicio<input id="pAirStart" type="date"></label>
+              <label>Data fim<input id="pAirEnd" type="date"></label>
+              <button class="ghost" type="button" id="pAirClear">Limpar filtro</button>
+            </div>
+          </section>
+          <section class="dashgrid" style="grid-template-columns:.9fr 1.1fr;margin-bottom:14px">
+            <article class="card pad">
+              <div class="chead"><span class="ti2">Resumo do periodo</span><span class="eyebrow" id="pAirRangeLabel">Data da compra</span></div>
+              <div class="list" id="pAirSummary"></div>
+            </article>
+            <article class="card pad">
+              <div class="chead"><span class="ti2">Valor gasto por obra</span><span class="eyebrow">Periodo filtrado</span></div>
+              <div class="bars" id="pAirBars"></div>
+            </article>
+          </section>
           <section class="card table-card">
             <div class="pad">
               <div class="chead"><span class="ti2">Passagens aereas</span><span class="eyebrow" id="pAirCount">0 registros</span></div>
@@ -768,10 +781,17 @@
                     <th>Funcao</th>
                     <th>Tipo</th>
                     <th>Data da compra</th>
+                    <th>Data ida</th>
+                    <th>Data volta</th>
+                    <th>Horario ida</th>
+                    <th>Horario volta</th>
                     <th>Companhia</th>
+                    <th>Origem</th>
+                    <th>Destino</th>
                     <th>Localizador</th>
+                    <th>Pedido</th>
                     <th>Valor aprovado</th>
-                    <th>Valor</th>
+                    <th>Valor pago</th>
                     <th>Acoes</th>
                   </tr>
                 </thead>
@@ -786,6 +806,24 @@
             <h1>Rodoviario</h1>
             <p>Conferencie trechos rodoviarios, conexoes, observacoes e numero do pedido final.</p>
           </div>
+          <section class="card pad" style="margin-bottom:14px">
+            <div class="chead"><span class="ti2">Filtro por data da compra</span><span class="eyebrow">Periodo consultado</span></div>
+            <div class="mini-form" style="grid-template-columns:1fr 1fr auto">
+              <label>Data inicio<input id="pRoadStart" type="date"></label>
+              <label>Data fim<input id="pRoadEnd" type="date"></label>
+              <button class="ghost" type="button" id="pRoadClear">Limpar filtro</button>
+            </div>
+          </section>
+          <section class="dashgrid" style="grid-template-columns:.9fr 1.1fr;margin-bottom:14px">
+            <article class="card pad">
+              <div class="chead"><span class="ti2">Resumo do periodo</span><span class="eyebrow" id="pRoadRangeLabel">Data da compra</span></div>
+              <div class="list" id="pRoadSummary"></div>
+            </article>
+            <article class="card pad">
+              <div class="chead"><span class="ti2">Valor gasto por obra</span><span class="eyebrow">Periodo filtrado</span></div>
+              <div class="bars" id="pRoadBars"></div>
+            </article>
+          </section>
           <section class="card table-card">
             <div class="pad">
               <div class="chead"><span class="ti2">Passagens rodoviarias</span><span class="eyebrow" id="pRoadCount">0 registros</span></div>
@@ -799,10 +837,16 @@
                     <th>Funcao</th>
                     <th>Tipo</th>
                     <th>Data da compra</th>
+                    <th>Data ida</th>
+                    <th>Data volta</th>
+                    <th>Horario ida</th>
+                    <th>Horario volta</th>
                     <th>Origem</th>
                     <th>Destino</th>
+                    <th>Companhia</th>
+                    <th>Pedido</th>
                     <th>Valor aprovado</th>
-                    <th>Valor</th>
+                    <th>Valor pago</th>
                     <th>Acoes</th>
                   </tr>
                 </thead>
@@ -833,8 +877,10 @@
               <label>Funcao<input name="nomeFuncao" placeholder="Ex.: Gerente I"></label>
               <label>Origem<input name="origem" placeholder="Ex.: GRU"></label>
               <label>Destino<input name="destino" placeholder="Ex.: AMS"></label>
-              <label>Data da viagem<input name="dataViagem" type="date"></label>
-              <label>Horario<input name="horario" placeholder="Ex.: 20:59 - 12:20"></label>
+              <label>Data de ida<input name="dataIda" type="date"></label>
+              <label>Data de volta<input name="dataVolta" type="date"></label>
+              <label>Horario de ida<input name="horarioIda" placeholder="Ex.: 20:59"></label>
+              <label>Horario de volta<input name="horarioVolta" placeholder="Ex.: 12:20"></label>
               <label>Companhia<input name="companhia" placeholder="Ex.: LATAM"></label>
               <label>Localizador<input name="localizador" placeholder="Ex.: ZHVOGT"></label>
               <label>Numero do pedido<input name="numeroPedido" placeholder="Ex.: 110766"></label>
@@ -1347,7 +1393,10 @@
         <label>Numero do pedido<input name="numeroPedido" placeholder="Ex.: 110766"></label>
         <label>Origem<input name="origem" placeholder="Ex.: GRU"></label>
         <label>Destino<input name="destino" placeholder="Ex.: AMS"></label>
-        <label>Horario<input name="horario" placeholder="Ex.: 20:59 - 12:20"></label>
+        <label>Data de ida<input name="dataIda" type="date"></label>
+        <label>Data de volta<input name="dataVolta" type="date"></label>
+        <label>Horario de ida<input name="horarioIda" placeholder="Ex.: 20:59"></label>
+        <label>Horario de volta<input name="horarioVolta" placeholder="Ex.: 12:20"></label>
         <label>Companhia<input name="companhia" placeholder="Ex.: LATAM"></label>
         <label>Localizador<input name="localizador" placeholder="Ex.: ZHVOGT"></label>
         <label>Valor aprovado<input name="valorAprovado" placeholder="Ex.: 18000,00"></label>
@@ -1524,6 +1573,10 @@
     const pMonthPicker = document.getElementById('pMonthPicker');
     const passagensRows = [];
     const passagensComplements = {};
+    const pAirStart = document.getElementById('pAirStart');
+    const pAirEnd = document.getElementById('pAirEnd');
+    const pRoadStart = document.getElementById('pRoadStart');
+    const pRoadEnd = document.getElementById('pRoadEnd');
     let passagensApiToken = (passagensConfig.token || '').trim();
     let passagensApiBaseUrl = (passagensConfig.baseUrl || 'https://portalmse.com.br/microservices/hub_mse/api_passagens').trim().replace(/\/+$/, '');
     let passagensLastSync = '';
@@ -1707,7 +1760,10 @@
           dataCompra: item.dataCompra ?? item.data_compra ?? '',
           origem: item.origem || '',
           destino: item.destino || '',
-          horario: item.horario || '',
+          dataIda: item.dataIda ?? item.data_ida ?? '',
+          dataVolta: item.dataVolta ?? item.data_volta ?? item.data_ida_volta ?? '',
+          horarioIda: item.horarioIda ?? item.horario_ida ?? '',
+          horarioVolta: item.horarioVolta ?? item.horario_volta ?? '',
           companhia: item.companhia || '',
           localizador: item.localizador || '',
           numeroPedido: item.numeroPedido ?? item.numero_pedido ?? '',
@@ -2923,6 +2979,11 @@
       return String(value).slice(0, 7);
     }
 
+    function normalizeDateValue(value) {
+      if (!value || value === '0000-00-00') return '';
+      return String(value).slice(0, 10);
+    }
+
     function getPassagemComplement(item) {
       return passagensComplements[passagemKey(item)] || {};
     }
@@ -2953,7 +3014,10 @@
       const companhia = complement.companhia || '';
       const origem = complement.origem || '';
       const destino = complement.destino || '';
-      const horario = complement.horario || '';
+      const dataIda = normalizeDateValue(complement.dataIda || item.data_ida || item.data_prevista || item.data_proxima || '');
+      const dataVolta = normalizeDateValue(complement.dataVolta || item.data_ida_volta || item.data_chegada || '');
+      const horarioIda = complement.horarioIda || '';
+      const horarioVolta = complement.horarioVolta || '';
       const observacao = complement.observacaoInterna || item.observacao || '';
       const economia = valorAprovado != null && valorPago != null && valorPago < valorAprovado ? valorAprovado - valorPago : 0;
       const pending =
@@ -2974,7 +3038,10 @@
         companhia,
         origem,
         destino,
-        horario,
+        dataIda,
+        dataVolta,
+        horarioIda,
+        horarioVolta,
         observacao,
         dataPrincipal: passagemDateField(item),
         economia,
@@ -3011,6 +3078,73 @@
       });
     }
 
+    function filterPassagensByRange(rows, start, end) {
+      const startValue = normalizeDateValue(start);
+      const endValue = normalizeDateValue(end);
+      return rows.filter(row => {
+        const date = normalizeDateValue(row.dataCompra);
+        if (!date) return false;
+        if (startValue && date < startValue) return false;
+        if (endValue && date > endValue) return false;
+        return true;
+      });
+    }
+
+    function summarizePassagens(rows) {
+      const totalPaid = rows.reduce((sum, row) => sum + (row.valorPago || 0), 0);
+      const totalSavings = rows.reduce((sum, row) => sum + (row.economia || 0), 0);
+      const obraMap = {};
+      rows.forEach(row => {
+        const obra = row.nome_obra || 'Sem obra';
+        if (!obraMap[obra]) obraMap[obra] = { total: 0, names: [] };
+        obraMap[obra].total += row.valorPago || 0;
+        obraMap[obra].names.push(row.nome_colab || row.nome || '-');
+      });
+      return {
+        totalPaid,
+        totalSavings,
+        obraEntries: Object.entries(obraMap).map(([obra, info]) => ({
+          obra,
+          total: info.total,
+          names: [...new Set(info.names)].sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        })).sort((a, b) => b.total - a.total)
+      };
+    }
+
+    function renderPassagensRangeBars(targetId, rows, emptyMessage) {
+      const container = document.getElementById(targetId);
+      const summary = summarizePassagens(rows);
+      const max = summary.obraEntries.length ? summary.obraEntries[0].total : 0;
+      container.innerHTML = summary.obraEntries.length ? summary.obraEntries.map(item => `
+        <div class="baritem">
+          <div class="barlabel"><span>${item.obra}</span><b>${brl(item.total)}</b></div>
+          <div class="track"><div class="fill" style="width:${max ? (item.total / max) * 100 : 0}%"></div></div>
+          <div class="lisub">${item.names.join(', ')}</div>
+        </div>
+      `).join('') : `<div class="empty-state"><b>${emptyMessage}</b>Ajuste o intervalo de datas para consultar outro periodo.</div>`;
+    }
+
+    function renderPassagensRangeSummary(targetId, labelId, rows, start, end) {
+      const container = document.getElementById(targetId);
+      const label = document.getElementById(labelId);
+      const summary = summarizePassagens(rows);
+      label.textContent = start || end ? `${start ? formatDate(start) : 'Inicio'} ate ${end ? formatDate(end) : 'Hoje'}` : 'Data da compra';
+      container.innerHTML = rows.length ? `
+        <div class="li">
+          <div><b class="link">${rows.length} nome(s)</b><div class="lisub">Passagens encontradas no intervalo</div></div>
+          <span class="tag neutral">${rows.length}</span>
+        </div>
+        <div class="li">
+          <div><b class="link">Total gasto</b><div class="lisub">Somatorio do valor pago no periodo</div></div>
+          <span class="tag ok">${brl(summary.totalPaid)}</span>
+        </div>
+        <div class="li">
+          <div><b class="link">Economia do periodo</b><div class="lisub">Somente quando o pago ficou abaixo do aprovado</div></div>
+          <span class="tag ${summary.totalSavings > 0 ? 'ok' : 'neutral'}">${summary.totalSavings > 0 ? brl(summary.totalSavings) : 'R$ 0,00'}</span>
+        </div>
+      ` : `<div class="empty-state"><b>Nenhuma passagem no periodo.</b>Escolha uma nova data inicial e final para consultar.</div>`;
+    }
+
     function renderPassagensTable(targetId, rows, columns) {
       const body = document.getElementById(targetId);
       if (!rows.length) {
@@ -3039,8 +3173,37 @@
             <td>${row.nome_funcao || '-'}</td>
             <td>${row.tipo || '-'}</td>
             <td>${formatDate(row.dataCompra)}</td>
+            <td>${formatDate(row.dataIda)}</td>
+            <td>${formatDate(row.dataVolta)}</td>
+            <td>${row.horarioIda || '-'}</td>
+            <td>${row.horarioVolta || '-'}</td>
             <td>${row.origem || '-'}</td>
             <td>${row.destino || '-'}</td>
+            <td>${row.companhia || '-'}</td>
+            <td>${row.pedido || '<span class="pending">Pendente</span>'}</td>
+            <td class="money">${row.valorAprovado == null ? '-' : brl(row.valorAprovado)}</td>
+            <td class="money">${row.valorPago == null ? '-' : brl(row.valorPago)}</td>
+            <td class="actioncell"><button class="rowact" title="Complementar passagem" aria-label="Complementar passagem" onclick="editPassagem('${row.key}')">${icon('edit')}</button></td>
+          </tr>
+        `).join('');
+      }
+      if (targetId === 'pAirRows') {
+        body.innerHTML = rows.map(row => `
+          <tr>
+            <td><span class="company">${row.nome_colab || row.nome || '-'}</span></td>
+            <td>${row.nome_obra || '-'}</td>
+            <td>${row.nome_funcao || '-'}</td>
+            <td>${row.tipo || '-'}</td>
+            <td>${formatDate(row.dataCompra)}</td>
+            <td>${formatDate(row.dataIda)}</td>
+            <td>${formatDate(row.dataVolta)}</td>
+            <td>${row.horarioIda || '-'}</td>
+            <td>${row.horarioVolta || '-'}</td>
+            <td>${row.companhia || '-'}</td>
+            <td>${row.origem || '-'}</td>
+            <td>${row.destino || '-'}</td>
+            <td>${row.localizador || '-'}</td>
+            <td>${row.pedido || '<span class="pending">Pendente</span>'}</td>
             <td class="money">${row.valorAprovado == null ? '-' : brl(row.valorAprovado)}</td>
             <td class="money">${row.valorPago == null ? '-' : brl(row.valorPago)}</td>
             <td class="actioncell"><button class="rowact" title="Complementar passagem" aria-label="Complementar passagem" onclick="editPassagem('${row.key}')">${icon('edit')}</button></td>
@@ -3072,16 +3235,27 @@
       const roadRows = filteredPassagens(rows, 'road');
       const totalPaid = rows.reduce((sum, row) => sum + (row.valorPago || 0), 0);
       const totalSavings = rows.reduce((sum, row) => sum + (row.economia || 0), 0);
-      const pending = rows.filter(row => row.pending).length;
       const byObra = {};
-      const byTipo = {};
+      const byMode = {
+        Aereo: { count: 0, total: 0 },
+        Rodoviario: { count: 0, total: 0 }
+      };
+      const savingsByObra = {};
 
       rows.forEach(row => {
         const obra = row.nome_obra || 'Sem obra';
-        const tipo = row.tipo || 'Nao informado';
-        byObra[obra] = (byObra[obra] || 0) + 1;
-        byTipo[tipo] = (byTipo[tipo] || 0) + 1;
+        byObra[obra] = (byObra[obra] || 0) + (row.valorPago || 0);
+        if (row.modalidade === 'Aereo' || row.modalidade === 'Rodoviario') {
+          byMode[row.modalidade].count += 1;
+          byMode[row.modalidade].total += row.valorPago || 0;
+        }
+        if (row.economia > 0) {
+          savingsByObra[obra] = (savingsByObra[obra] || 0) + row.economia;
+        }
       });
+
+      const airRangeRows = filterPassagensByRange(airRows, pAirStart.value, pAirEnd.value);
+      const roadRangeRows = filterPassagensByRange(roadRows, pRoadStart.value, pRoadEnd.value);
 
       pMonthPicker.value = currentPassagensMonth();
       document.getElementById('pPageTitle').textContent = `Controle de Passagens | ${monthLabel(currentPassagensMonth())}`;
@@ -3093,52 +3267,45 @@
       document.getElementById('pRoad').textContent = rows.filter(row => row.modalidade === 'Rodoviario').length;
       document.getElementById('pPaid').textContent = brl(totalPaid);
       document.getElementById('pSavings').textContent = brl(totalSavings);
-      document.getElementById('pPending').textContent = pending;
       document.getElementById('pCountLabel').textContent = `${filtered.length} registros filtrados`;
       document.getElementById('pFootCount').textContent = `${rows.length} item(ns) no mes`;
-      document.getElementById('pAirCount').textContent = `${airRows.length} registros`;
-      document.getElementById('pRoadCount').textContent = `${roadRows.length} registros`;
+      document.getElementById('pAirCount').textContent = `${airRangeRows.length} registros`;
+      document.getElementById('pRoadCount').textContent = `${roadRangeRows.length} registros`;
       document.getElementById('pSyncStamp').textContent = passagensLastSync ? `Ultima sync ${passagensLastSync}` : 'Sem sincronizacao ainda';
 
       const obraEntries = Object.entries(byObra).sort((a, b) => b[1] - a[1]);
       const obraMax = obraEntries.length ? obraEntries[0][1] : 0;
-      document.getElementById('pBars').innerHTML = obraEntries.length ? obraEntries.map(([obra, count]) => `
+      document.getElementById('pBars').innerHTML = obraEntries.length ? obraEntries.map(([obra, total]) => `
         <div class="baritem">
-          <div class="barlabel"><span>${obra}</span><b>${count} solicitacao(oes)</b></div>
-          <div class="track"><div class="fill" style="width:${obraMax ? (count / obraMax) * 100 : 0}%"></div></div>
+          <div class="barlabel"><span>${obra}</span><b>${brl(total)}</b></div>
+          <div class="track"><div class="fill" style="width:${obraMax ? (total / obraMax) * 100 : 0}%"></div></div>
         </div>
-      `).join('') : `<div class="empty-state"><b>Sem obras carregadas.</b>Depois da sincronizacao, a distribuicao por obra aparece aqui.</div>`;
+      `).join('') : `<div class="empty-state"><b>Sem obras carregadas.</b>Depois da sincronizacao, o gasto por obra aparece aqui.</div>`;
 
-      const tipoEntries = Object.entries(byTipo).sort((a, b) => b[1] - a[1]);
-      document.getElementById('pTypes').innerHTML = tipoEntries.length ? tipoEntries.map(([tipo, count]) => `
-        <div class="li">
-          <div><b class="link">${tipo}</b><div class="lisub">${count} solicitacao(oes)</div></div>
-          <span class="tag neutral">${count}</span>
+      const modeEntries = Object.entries(byMode);
+      const modeMax = Math.max(...modeEntries.map(([, info]) => info.count), 0);
+      document.getElementById('pModeBars').innerHTML = modeEntries.map(([mode, info]) => `
+        <div class="baritem">
+          <div class="barlabel"><span>${mode}</span><b>${info.count} passagem(ns) | ${brl(info.total)}</b></div>
+          <div class="track"><div class="fill" style="width:${modeMax ? (info.count / modeMax) * 100 : 0}%"></div></div>
         </div>
-      `).join('') : `<div class="empty-state"><b>Nenhum tipo disponivel.</b>A sincronizacao da API vai montar esse resumo automaticamente.</div>`;
+      `).join('');
 
-      document.getElementById('pChecklist').innerHTML = rows.length ? `
+      const savingsEntries = Object.entries(savingsByObra).sort((a, b) => b[1] - a[1]);
+      document.getElementById('pSavingsList').innerHTML = savingsEntries.length ? savingsEntries.map(([obra, total]) => `
         <div class="li">
-          <div><b class="link">Token configurado</b><div class="lisub">${passagensApiToken ? 'API pronta para sincronizar' : 'Configure a chave Bearer da API'}</div></div>
-          <span class="tag ${passagensApiToken ? 'ok' : 'warn'}">${passagensApiToken ? 'OK' : 'Pendente'}</span>
+          <div><b class="link">${obra}</b><div class="lisub">Economia acumulada no periodo mensal</div></div>
+          <span class="tag ok">${brl(total)}</span>
         </div>
-        <div class="li">
-          <div><b class="link">Economia do mes</b><div class="lisub">${rows.filter(row => row.economia > 0).length} passagem(ns) com valor pago menor que o aprovado</div></div>
-          <span class="tag ${totalSavings > 0 ? 'ok' : 'neutral'}">${totalSavings > 0 ? brl(totalSavings) : 'Sem economia'}</span>
-        </div>
-        <div class="li">
-          <div><b class="link">Complementos internos</b><div class="lisub">${pending} passagem(ns) ainda precisam de pedido, localizador ou rota final</div></div>
-          <span class="tag ${pending ? 'warn' : 'ok'}">${pending ? 'Revisar' : 'Completo'}</span>
-        </div>
-        <div class="li">
-          <div><b class="link">Snapshot local</b><div class="lisub">${passagensLastSync ? `Ultima atualizacao em ${passagensLastSync}` : 'Nenhuma sincronizacao salva ainda'}</div></div>
-          <span class="tag ${passagensLastSync ? 'ok' : 'neutral'}">${passagensLastSync ? 'Salvo' : 'Vazio'}</span>
-        </div>
-      ` : `<div class="empty-state"><b>Modulo pronto para uso.</b>Configure a API e sincronize as solicitacoes de passagem para popular o painel.</div>`;
+      `).join('') : `<div class="empty-state"><b>Sem economia neste mes.</b>Esse quadro mostra apenas passagens com valor pago abaixo do aprovado.</div>`;
 
       renderPassagensTable('pRows', filtered, 10);
-      renderPassagensTable('pAirRows', airRows, 10);
-      renderPassagensTable('pRoadRows', roadRows, 10);
+      renderPassagensTable('pAirRows', airRangeRows, 17);
+      renderPassagensTable('pRoadRows', roadRangeRows, 16);
+      renderPassagensRangeSummary('pAirSummary', 'pAirRangeLabel', airRangeRows, pAirStart.value, pAirEnd.value);
+      renderPassagensRangeSummary('pRoadSummary', 'pRoadRangeLabel', roadRangeRows, pRoadStart.value, pRoadEnd.value);
+      renderPassagensRangeBars('pAirBars', airRangeRows, 'Nenhuma passagem aerea nesse intervalo.');
+      renderPassagensRangeBars('pRoadBars', roadRangeRows, 'Nenhuma passagem rodoviaria nesse intervalo.');
       const cadastroRows = rows.filter(row => row.tabela === 'manual' || row.key.startsWith('manual:'));
       document.getElementById('pCadastroCount').textContent = `${cadastroRows.length} registros`;
       document.getElementById('pCadastroRows').innerHTML = cadastroRows.length ? cadastroRows.map(row => `
@@ -3203,7 +3370,10 @@
       form.elements.numeroPedido.value = item.pedido || '';
       form.elements.origem.value = item.origem || '';
       form.elements.destino.value = item.destino || '';
-      form.elements.horario.value = item.horario || '';
+      form.elements.dataIda.value = item.dataIda || '';
+      form.elements.dataVolta.value = item.dataVolta || '';
+      form.elements.horarioIda.value = item.horarioIda || '';
+      form.elements.horarioVolta.value = item.horarioVolta || '';
       form.elements.companhia.value = item.companhia || '';
       form.elements.localizador.value = item.localizador || '';
       form.elements.valorAprovado.value = item.valorAprovado == null ? '' : String(item.valorAprovado).replace('.', ',');
@@ -3357,6 +3527,17 @@
     document.getElementById('dq').addEventListener('input', renderDiarista);
     document.getElementById('hq').addEventListener('input', renderHitachi);
     document.getElementById('pq').addEventListener('input', renderPassagens);
+    [pAirStart, pAirEnd, pRoadStart, pRoadEnd].forEach(input => input.addEventListener('change', renderPassagens));
+    document.getElementById('pAirClear').addEventListener('click', () => {
+      pAirStart.value = '';
+      pAirEnd.value = '';
+      renderPassagens();
+    });
+    document.getElementById('pRoadClear').addEventListener('click', () => {
+      pRoadStart.value = '';
+      pRoadEnd.value = '';
+      renderPassagens();
+    });
     hMonthPicker.addEventListener('change', () => {
       if (!hMonthPicker.value) hMonthPicker.value = currentMonthKey();
       renderHitachi();
@@ -3725,8 +3906,9 @@
         nome_obra: formData.nomeObra || '',
         nome_funcao: formData.nomeFuncao || '',
         data_compra: formData.dataCompra || '',
-        data_prevista: formData.dataViagem || '',
-        data_ida: formData.dataViagem || '',
+        data_prevista: formData.dataIda || '',
+        data_ida: formData.dataIda || '',
+        data_ida_volta: formData.dataVolta || '',
         observacao: formData.observacao || ''
       });
       passagensComplements[`manual:${manualId}`] = {
@@ -3734,7 +3916,10 @@
         dataCompra: formData.dataCompra || '',
         origem: formData.origem || '',
         destino: formData.destino || '',
-        horario: formData.horario || '',
+        dataIda: formData.dataIda || '',
+        dataVolta: formData.dataVolta || '',
+        horarioIda: formData.horarioIda || '',
+        horarioVolta: formData.horarioVolta || '',
         companhia: formData.companhia || '',
         localizador: formData.localizador || '',
         numeroPedido: formData.numeroPedido || '',
@@ -3760,7 +3945,10 @@
         numeroPedido: formData.numeroPedido || '',
         origem: formData.origem || '',
         destino: formData.destino || '',
-        horario: formData.horario || '',
+        dataIda: formData.dataIda || '',
+        dataVolta: formData.dataVolta || '',
+        horarioIda: formData.horarioIda || '',
+        horarioVolta: formData.horarioVolta || '',
         companhia: formData.companhia || '',
         localizador: formData.localizador || '',
         valorAprovado: formData.valorAprovado || '',
@@ -3771,6 +3959,9 @@
         const row = passagensRows.find(item => passagemKey(item) === editingPassagemKey);
         if (row) {
           row.data_compra = formData.dataCompra || row.data_compra || '';
+          row.data_prevista = formData.dataIda || row.data_prevista || '';
+          row.data_ida = formData.dataIda || row.data_ida || '';
+          row.data_ida_volta = formData.dataVolta || row.data_ida_volta || '';
           row.observacao = formData.observacaoInterna || row.observacao || '';
         }
       }
