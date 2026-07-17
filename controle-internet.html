@@ -4275,7 +4275,7 @@
       closeModalById('passagensConfigModal');
       setSyncStatus('Configuracao da API de passagens atualizada no navegador');
     });
-    document.getElementById('passagensManualForm').addEventListener('submit', event => {
+    document.getElementById('passagensManualForm').addEventListener('submit', async event => {
       event.preventDefault();
       const formData = Object.fromEntries(new FormData(event.currentTarget).entries());
       const manualId = createId();
