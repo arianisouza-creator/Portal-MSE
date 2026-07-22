@@ -187,6 +187,7 @@ def load_portal_config() -> dict:
                 )
             ),
             "token": _clean(os.getenv("PASSAGENS_API_TOKEN", "")),
+            "useApiOnly": True,
         },
         "passagensSeed": load_optional_json(PASSAGENS_SEED_FILE),
     }
