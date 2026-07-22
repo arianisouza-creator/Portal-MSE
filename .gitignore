@@ -11,6 +11,8 @@ env/
 .vscode/
 .idea/
 *.py[cod]
+deploy.log
+.git-credentials
 Fatura.pdf
 Info.pdf
 Resultado_Final.pdf

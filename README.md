@@ -79,6 +79,24 @@ Sugestões:
 - Banco em **Amazon RDS MySQL** — basta apontar `DB_HOST`/`DB_NAME`/credenciais.
 - Configure as variáveis via ambiente/Secrets Manager (não versione o `.env`).
 
+## Auto-deploy (webhook do GitHub)
+
+Um push na branch `main` dispara o deploy automático no servidor:
+
+```
+GitHub push (main)
+      │  POST https://controle-internet.portalmse.com.br/gh-deploy  (assinado HMAC)
+      ▼
+portal-mse-webhook.service (gunicorn :5061, webhook.py)
+      │  valida assinatura -> dispara deploy.sh (destacado)
+      ▼
+deploy.sh: git reset --hard origin/main + pip install (se mudou) + restart do portal-mse.service
+```
+
+- `webhook.py`: listener isolado do app (serviço próprio), para não ser derrubado quando o portal reinicia.
+- `deploy.sh`: script de atualização (log em `deploy.log`).
+- Segurança: valida `X-Hub-Signature-256` (HMAC-SHA256) com `GITHUB_WEBHOOK_SECRET`; só faz deploy em push na branch `DEPLOY_BRANCH`.
+
 ## Comportamento
 
 - O layout continua 100% no arquivo HTML.
