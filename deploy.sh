@@ -4,6 +4,10 @@
 # e reinicia os servicos. Log em /var/www/portal-mse/deploy.log
 set -uo pipefail
 
+# Garante PATH completo: o servico systemd define PATH so com o venv, entao
+# aqui recompomos os diretorios de sistema (git, sudo, date, etc.).
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/www/portal-mse/venv/bin"
+
 APP_DIR="/var/www/portal-mse"
 BRANCH="${DEPLOY_BRANCH:-main}"
 LOG="$APP_DIR/deploy.log"
