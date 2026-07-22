@@ -39,10 +39,18 @@ except Exception:  # dotenv é opcional
 
 BASE_DIR = Path(__file__).resolve().parent
 HTML_FILE = BASE_DIR / "controle-internet.html"
-
-
 def _clean(value: str) -> str:
     return (value or "").strip()
+PASSAGENS_SEED_FILE = Path(__file__).with_name("passagens-import-seed.json")
+
+
+def load_optional_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
 
 
 DB_CONFIG = {
@@ -180,6 +188,7 @@ def load_portal_config() -> dict:
             ),
             "token": _clean(os.getenv("PASSAGENS_API_TOKEN", "")),
         },
+        "passagensSeed": load_optional_json(PASSAGENS_SEED_FILE),
     }
 
 

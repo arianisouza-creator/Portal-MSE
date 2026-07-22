@@ -1640,6 +1640,7 @@
     const portalConfig = window.PORTAL_CONFIG || {};
     const apiConfig = portalConfig.api || {};
     const passagensConfig = portalConfig.passagens || {};
+    const passagensSeedConfig = portalConfig.passagensSeed || {};
     const API_BASE_URL = (apiConfig.baseUrl || '').replace(/\/+$/, '');
     const REMOTE_ENABLED = apiConfig.enabled !== false;
     const LOCAL_CACHE_KEY = 'portal-mse-cache-v2';
@@ -1693,21 +1694,28 @@
       return [...map.values()];
     }
 
-    function mergePassagensPayload(localPayload = {}, remotePayload = {}) {
+    function mergePassagensPayload(localPayload = {}, remotePayload = {}, seedPayload = {}) {
+      const seedRows = seedPayload.passagensRows || seedPayload.passagens_rows || [];
       const localRows = localPayload.passagensRows || localPayload.passagens_rows || [];
       const remoteRows = remotePayload.passagensRows || remotePayload.passagens_rows || [];
+      const seedCredits = seedPayload.passagensCreditos || seedPayload.passagens_creditos || [];
       const localCredits = localPayload.passagensCreditos || localPayload.passagens_creditos || [];
       const remoteCredits = remotePayload.passagensCreditos || remotePayload.passagens_creditos || [];
+      const seedComplements = seedPayload.passagensComplements || seedPayload.passagens_complements || [];
       const localComplements = localPayload.passagensComplements || localPayload.passagens_complements || [];
       const remoteComplements = remotePayload.passagensComplements || remotePayload.passagens_complements || [];
+      const seededRemoteRows = mergeByKey(remoteRows, seedRows, item => `${item.tabela || 'passagens'}:${item.id}`);
+      const seededRemoteCredits = mergeByKey(remoteCredits, seedCredits, item => String(item.id || ''));
+      const seededRemoteComplements = mergeByKey(remoteComplements, seedComplements, item => String(item.key || ''));
       return {
+        ...seedPayload,
         ...remotePayload,
-        passagensRows: mergeByKey(localRows, remoteRows, item => `${item.tabela || 'passagens'}:${item.id}`),
-        passagensCreditos: mergeByKey(localCredits, remoteCredits, item => String(item.id || '')),
-        passagensComplements: mergeByKey(localComplements, remoteComplements, item => String(item.key || '')),
-        passagensApiToken: localPayload.passagensApiToken || remotePayload.passagensApiToken || passagensApiToken,
-        passagensApiBaseUrl: localPayload.passagensApiBaseUrl || remotePayload.passagensApiBaseUrl || passagensApiBaseUrl,
-        passagensLastSync: localPayload.passagensLastSync || remotePayload.passagensLastSync || passagensLastSync
+        passagensRows: mergeByKey(localRows, seededRemoteRows, item => `${item.tabela || 'passagens'}:${item.id}`),
+        passagensCreditos: mergeByKey(localCredits, seededRemoteCredits, item => String(item.id || '')),
+        passagensComplements: mergeByKey(localComplements, seededRemoteComplements, item => String(item.key || '')),
+        passagensApiToken: localPayload.passagensApiToken || remotePayload.passagensApiToken || seedPayload.passagensApiToken || passagensApiToken,
+        passagensApiBaseUrl: localPayload.passagensApiBaseUrl || remotePayload.passagensApiBaseUrl || seedPayload.passagensApiBaseUrl || passagensApiBaseUrl,
+        passagensLastSync: localPayload.passagensLastSync || remotePayload.passagensLastSync || seedPayload.passagensLastSync || passagensLastSync
       };
     }
 
@@ -1974,13 +1982,17 @@
     async function bootstrapData() {
       setSyncStatus('Carregando dados do portal...');
       const localPayload = loadLocalCache();
+      const seedPayload = passagensSeedConfig;
       if (REMOTE_ENABLED) {
         try {
           const remotePayload = await loadRemoteState();
-          const payload = mergePassagensPayload(localPayload, remotePayload);
+          const payload = mergePassagensPayload(localPayload, remotePayload, seedPayload);
           hydrateState(payload);
           saveLocalCache();
           if (
+            (seedPayload.passagensRows || seedPayload.passagens_rows || []).length ||
+            (seedPayload.passagensComplements || seedPayload.passagens_complements || []).length ||
+            (seedPayload.passagensCreditos || seedPayload.passagens_creditos || []).length ||
             (localPayload.passagensRows || localPayload.passagens_rows || []).length ||
             (localPayload.passagensComplements || localPayload.passagens_complements || []).length ||
             (localPayload.passagensCreditos || localPayload.passagens_creditos || []).length
@@ -1996,8 +2008,8 @@
           return;
         }
       }
-      hydrateState(localPayload);
-      setSyncStatus('Banco nao configurado. Usando modo local.');
+      hydrateState(mergePassagensPayload(localPayload, {}, seedPayload));
+      setSyncStatus('Banco nao configurado. Usando base local.');
     }
 
     async function upsertContractRemote(contract) {
