@@ -39,9 +39,21 @@ except Exception:  # dotenv é opcional
 
 BASE_DIR = Path(__file__).resolve().parent
 HTML_FILE = BASE_DIR / "controle-internet.html"
+PROJECT_CONFIG_FILE = BASE_DIR / "project-config.json"
 def _clean(value: str) -> str:
     return (value or "").strip()
 PASSAGENS_SEED_FILE = Path(__file__).with_name("passagens-import-seed.json")
+
+DEFAULT_PROJECT_CONFIG = {
+    "key": "internet",
+    "name": "Portal Internet",
+    "browserTitle": "MSE | Portal Internet",
+    "brandTitle": "Portal Internet",
+    "brandSubtitle": "Controle administrativo · operacao mensal",
+    "greeting": "Boa tarde. Bem-vinda ao Portal Internet.",
+    "defaultModule": "internet",
+    "enabledModules": ["internet"],
+}
 
 
 def load_optional_json(path: Path) -> dict:
@@ -51,6 +63,20 @@ def load_optional_json(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
+
+
+def load_project_config() -> dict:
+    raw = load_optional_json(PROJECT_CONFIG_FILE)
+    merged = {**DEFAULT_PROJECT_CONFIG}
+    if isinstance(raw, dict):
+        merged.update({key: value for key, value in raw.items() if value is not None})
+    enabled_modules = merged.get("enabledModules")
+    if not isinstance(enabled_modules, list) or not enabled_modules:
+        merged["enabledModules"] = list(DEFAULT_PROJECT_CONFIG["enabledModules"])
+    default_module = _clean(str(merged.get("defaultModule", "")))
+    if default_module not in merged["enabledModules"]:
+        merged["defaultModule"] = merged["enabledModules"][0]
+    return merged
 
 
 DB_CONFIG = {
@@ -174,6 +200,7 @@ def close_db(_exc=None) -> None:
 # --------------------------------------------------------------------------- #
 def load_portal_config() -> dict:
     return {
+        "project": load_project_config(),
         "api": {
             # vazio => mesma origem: as chamadas viram /rest/v1/<tabela>.
             "baseUrl": _clean(os.getenv("PORTAL_API_BASE_URL", "")),

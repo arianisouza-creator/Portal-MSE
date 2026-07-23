@@ -1,0 +1,10 @@
+{
+  "key": "internet",
+  "name": "Portal Internet",
+  "browserTitle": "MSE | Portal Internet",
+  "brandTitle": "Portal Internet",
+  "brandSubtitle": "Controle administrativo - operacao mensal",
+  "greeting": "Boa tarde. Bem-vinda ao Portal Internet.",
+  "defaultModule": "internet",
+  "enabledModules": ["internet"]
+}

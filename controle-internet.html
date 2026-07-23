@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MSE | Controle de Internet</title>
+  <title>MSE | Portal Internet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -230,7 +230,7 @@
         <div class="logo">mse</div>
         <span class="hsep"></span>
         <div class="titles">
-          <div class="t">Portal <b>MSE</b></div>
+          <div class="t" id="brandTitle">Portal Internet</div>
           <div class="s">Controle administrativo · operacao mensal</div>
         </div>
       </div>
@@ -252,7 +252,7 @@
 
   <div class="ticker">
     <div class="trow">
-      <span class="greet">Boa tarde. Bem-vinda ao portal MSE.</span>
+      <span class="greet" id="portalGreeting">Boa tarde. Bem-vinda ao Portal Internet.</span>
       <div class="tscroll">
         <span class="ti"><span data-icon="settings2"></span>Parametrizavel</span>
         <span class="ti"><span data-icon="refresh"></span><span id="updatedAt">Atualizado agora</span></span>
@@ -268,11 +268,11 @@
   <div class="shell">
     <aside class="side">
       <div class="ssearch"><span data-icon="search"></span><span class="pl">Buscar aplicacoes</span><kbd>Ctrl K</kbd></div>
-      <div class="grp">Acesso rapido</div>
+      <div class="grp" id="quickAccessLabel">Acesso rapido</div>
       <div class="navblock open" id="adminBlock">
         <button class="nv" id="adminToggle" type="button">
           <span class="ni" data-icon="briefcase"></span>
-          <span class="nl">Administrativo</span>
+          <span class="nl" id="adminLabel">Administrativo</span>
           <span class="chev" data-icon="chevronRight"></span>
         </button>
         <div class="navtree">
@@ -281,7 +281,7 @@
           <button class="subitem" id="navPassagens" type="button">Passagens</button>
         </div>
       </div>
-      <div class="grp">Disciplinas</div>
+      <div class="grp" id="disciplinesLabel">Disciplinas</div>
       <div class="navblock" id="docsBlock" style="margin-top:10px">
         <button class="nv" id="docsToggle" type="button">
           <span class="ni" data-icon="folder"></span>
@@ -1649,9 +1649,17 @@
     const PROTECTED_USER = 'ADM';
     const PROTECTED_PASS = 'mse2026';
     const portalConfig = window.PORTAL_CONFIG || {};
+    const projectConfig = portalConfig.project || {};
     const apiConfig = portalConfig.api || {};
     const passagensConfig = portalConfig.passagens || {};
     const passagensSeedConfig = portalConfig.passagensSeed || {};
+    const ALL_MODULES = ['internet', 'diarista', 'passagens', 'hitachi'];
+    const enabledModules = Array.isArray(projectConfig.enabledModules) && projectConfig.enabledModules.length
+      ? projectConfig.enabledModules.filter(moduleName => ALL_MODULES.includes(moduleName))
+      : ['internet'];
+    const defaultProjectModule = enabledModules.includes(projectConfig.defaultModule)
+      ? projectConfig.defaultModule
+      : (enabledModules[0] || 'internet');
     const API_BASE_URL = (apiConfig.baseUrl || '').replace(/\/+$/, '');
     const REMOTE_ENABLED = apiConfig.enabled !== false;
     const PASSAGENS_API_ONLY = passagensConfig.useApiOnly !== false;
@@ -1678,6 +1686,45 @@
     let passagensLastSync = '';
     let editingCreditoId = null;
     let deletingPassagemKey = '';
+
+    function applyProjectBranding() {
+      document.title = (projectConfig.browserTitle || 'MSE | Portal Internet').trim();
+      const brandTitle = document.getElementById('brandTitle');
+      const brandSubtitle = document.querySelector('.titles .s');
+      const portalGreeting = document.getElementById('portalGreeting');
+      if (brandTitle) brandTitle.textContent = (projectConfig.brandTitle || projectConfig.name || 'Portal Internet').trim();
+      if (brandSubtitle) brandSubtitle.textContent = (projectConfig.brandSubtitle || 'Controle administrativo - operacao mensal').trim();
+      if (portalGreeting) portalGreeting.textContent = (projectConfig.greeting || `Boa tarde. Bem-vinda ao ${(projectConfig.name || 'Portal Internet')}.`).trim();
+    }
+
+    function applyProjectMode() {
+      const visibilityMap = {
+        internet: ['navInternet', 'moduleInternet'],
+        diarista: ['navDiarista', 'moduleDiarista'],
+        passagens: ['navPassagens', 'modulePassagens'],
+        hitachi: ['navHitachi', 'moduleHitachi']
+      };
+      Object.entries(visibilityMap).forEach(([moduleName, ids]) => {
+        const visible = enabledModules.includes(moduleName);
+        ids.forEach(id => {
+          const element = document.getElementById(id);
+          if (element) element.style.display = visible ? '' : 'none';
+        });
+      });
+      const adminVisible = enabledModules.some(moduleName => ['internet', 'diarista', 'passagens'].includes(moduleName));
+      const docsVisible = enabledModules.includes('hitachi');
+      const adminBlock = document.getElementById('adminBlock');
+      const docsBlock = document.getElementById('docsBlock');
+      const quickAccessLabel = document.getElementById('quickAccessLabel');
+      const disciplinesLabel = document.getElementById('disciplinesLabel');
+      if (adminBlock) adminBlock.style.display = adminVisible ? '' : 'none';
+      if (quickAccessLabel) quickAccessLabel.style.display = adminVisible ? '' : 'none';
+      if (docsBlock) docsBlock.style.display = docsVisible ? '' : 'none';
+      if (disciplinesLabel) disciplinesLabel.style.display = docsVisible ? '' : 'none';
+      const adminLabel = document.getElementById('adminLabel');
+      if (adminLabel) adminLabel.textContent = 'Administrativo';
+      currentModule = defaultProjectModule;
+    }
 
     function defaultMonth() {
       const now = new Date();
@@ -4714,6 +4761,8 @@
 
     async function initializePortal() {
       await bootstrapData();
+      applyProjectBranding();
+      applyProjectMode();
       hMonthPicker.value = currentMonthKey();
       pMonthPicker.value = currentMonthKey();
       resetHitachiForm();
@@ -4727,12 +4776,12 @@
       renderPassagens();
       openHitachiView('overview');
       renderHitachi();
-      if (passagensApiToken && PASSAGENS_API_ONLY) {
+      if (enabledModules.includes('passagens') && passagensApiToken && PASSAGENS_API_ONLY) {
         syncPassagensData().catch(error => console.error(error));
-      } else if (passagensApiToken && !passagensRows.length) {
+      } else if (enabledModules.includes('passagens') && passagensApiToken && !passagensRows.length) {
         syncPassagensData().catch(error => console.error(error));
       }
-      switchModule('internet');
+      switchModule(defaultProjectModule);
     }
 
     initializePortal();
